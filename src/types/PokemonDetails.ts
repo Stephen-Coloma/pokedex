@@ -7,6 +7,7 @@ import { Pokemon, PokemonType } from "./Pokemon";
  * cry - sounds of the pokemon
  * stats - the 6 stats of every pokemon
  * weaknesses - pokemon type/s that is a weakness of the pokemon
+ * evolution - to be utilized in displaying the evolution chain of the pokemon
  */
 export interface PokemonDetails extends Pokemon {
   height: number;
@@ -16,7 +17,8 @@ export interface PokemonDetails extends Pokemon {
   moves: PokemonMove[],
   cry: string,
   stats: PokemonStat,
-  weaknesses: PokemonType[]
+  weaknesses: PokemonType[],
+  evolutionChain?: Pick<Pokemon, 'id' | 'name' | 'photo'>;
 }
 
 /**

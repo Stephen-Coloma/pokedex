@@ -97,7 +97,7 @@ async function fetchPokemonMainDetails(initialResults: NamedAPIResource[]): Prom
     const pokemonPromises = initialResults.map(async (item) => {
       const response = await axios.get(item.url);
       const { id, name, types } = response.data;
-      const photoUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${id}.png `;
+      const photoUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${id}.png`;
       const pokemon: Pokemon = {
         id: id,
         name: name,

@@ -1,4 +1,9 @@
-import { PokemonAbility, PokemonDetails, PokemonMove, PokemonStat } from "@/types/PokemonDetails";
+import {
+  PokemonAbility,
+  PokemonProfile,
+  PokemonMove,
+  PokemonStat,
+} from "@/types/PokemonProfile";
 import Axios, { AxiosResponse } from "axios";
 import { setupCache } from "axios-cache-interceptor";
 import { useEffect, useState } from "react";
@@ -10,14 +15,19 @@ const axios = setupCache(Axios.create());
 
 /**
  * A custom hook that utilized for fetching compelete pokemon details.
- * @returns an API response type of object that contains pokemon details. 
+ * @returns an API response type of object that contains pokemon details.
  * Useful for managing errors and loading states in UI.
  */
-export function useFetchPokemonProfile({id, name, photo, type}: Pokemon): ApiResponse<PokemonDetails> {
-  const url = `https://pokeapi.co/api/v2/pokemon/${id}`
+export function useFetchPokemonProfile({
+  id,
+  name,
+  photo,
+  type,
+}: Pokemon): ApiResponse<PokemonProfile> {
+  const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
   const [status, setStatus] = useState<number>(0);
   const [statusText, setStatusText] = useState<string>("");
-  const [data, setData] = useState<PokemonDetails | null>(null);
+  const [data, setData] = useState<PokemonProfile | null>(null);
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -29,16 +39,24 @@ export function useFetchPokemonProfile({id, name, photo, type}: Pokemon): ApiRes
       setStatus(response.status);
       setStatusText(response.statusText);
 
-      const {height, weight, base_experience, abilities, moves, cries, stats } = response.data;
+      const {
+        height,
+        weight,
+        base_experience,
+        abilities,
+        moves,
+        cries,
+        stats,
+      } = response.data;
 
       const formattedAbilities = await fetchAbilities(abilities);
       const formattedMoves = await fetchMoves(moves);
-      const evolutionChainData  = await fetchEvolutionChain(id);
+      const evolutionChainData = await fetchEvolutionChain(id);
       const formattedCry = processCries(cries);
       const formattedStats = processStats(stats);
       const weaknesses = getWeaknesses(type);
 
-      const pokemonProfile: PokemonDetails = {
+      const pokemonProfile: PokemonProfile = {
         id: id,
         name: name,
         photo: photo,
@@ -51,8 +69,8 @@ export function useFetchPokemonProfile({id, name, photo, type}: Pokemon): ApiRes
         cry: formattedCry,
         stats: formattedStats,
         weaknesses: weaknesses,
-        evolutionChain: evolutionChainData
-      }
+        evolutionChain: evolutionChainData,
+      };
 
       setData(pokemonProfile);
     } catch (error: unknown) {
@@ -70,14 +88,45 @@ export function useFetchPokemonProfile({id, name, photo, type}: Pokemon): ApiRes
 }
 
 async function fetchAbilities(abilities: any): Promise<PokemonAbility[]> {
-  throw new Error("Function not implemented.");
+  try {
+    const abilityPromises = abilities.map(
+      async ({
+        ability,
+      }: {
+        ability: {
+          name: string;
+          url: string;
+        };
+      }) => {
+        const response = await axios.get(ability.url);
+        //ability effect in english language
+        const effect =
+          response.data.effect_entries[response.data.effect_entries.length - 1]
+            .effect;
+        return {
+          name: ability.name,
+          effect: effect,
+        };
+      }
+    );
+
+    const pokemonAbilities: PokemonAbility[] = await Promise.all(
+      abilityPromises
+    );
+
+    return pokemonAbilities;
+  } catch (error: unknown) {
+    throw error;
+  }
 }
 
 async function fetchMoves(moves: any): Promise<PokemonMove[]> {
   throw new Error("Function not implemented.");
 }
 
-async function fetchEvolutionChain(id: number): Promise<Pick<Pokemon, 'id' | 'name' | 'photo'>> {
+async function fetchEvolutionChain(
+  id: number
+): Promise<Pick<Pokemon, "id" | "name" | "photo">> {
   throw new Error("Function not implemented.");
 }
 
@@ -88,4 +137,3 @@ function processCries(cries: any): string {
 function processStats(stats: any): PokemonStat {
   throw new Error("Function not implemented.");
 }
-

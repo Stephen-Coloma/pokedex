@@ -9,7 +9,7 @@ import { Pokemon, PokemonType } from "./Pokemon";
  * weaknesses - pokemon type/s that is a weakness of the pokemon
  * evolution - to be utilized in displaying the evolution chain of the pokemon
  */
-export interface PokemonDetails extends Pokemon {
+export interface PokemonProfile extends Pokemon {
   height: number;
   weight: number;
   baseExperience: number;

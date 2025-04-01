@@ -18,8 +18,17 @@ export interface PokemonProfile extends Pokemon {
   cry: string,
   stats: PokemonStat,
   weaknesses: PokemonType[],
-  evolutionChain?: Pick<Pokemon, 'id' | 'name' | 'photo'>;
+  evolutionChain?: EvolutionChain;
 }
+
+/**
+ * Type that represents the evolution chain of the pokemon
+ */
+export type EvolutionChain = {
+  name: string,
+  photo: string,
+  evolvesTo: EvolutionChain[],
+};
 
 /**
  * Represents a Pokémon's ability

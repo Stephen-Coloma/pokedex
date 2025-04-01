@@ -34,7 +34,7 @@ const typeWeaknesses: Record<PokemonType, PokemonType[]> = {
  * @param types the pokemon type/s 
  * @returns the types where the pokemon is vulnerable to.
  */
-export function getWeaknesses(types: PokemonType[]): PokemonType[] {
+export default function getWeaknesses(types: PokemonType[]): PokemonType[] {
   const weaknesses = new Set<PokemonType>();
 
   types.forEach((currentType) => {

@@ -3,6 +3,7 @@ import Axios, { AxiosResponse } from "axios";
 import { setupCache } from "axios-cache-interceptor";
 import { useEffect, useState } from "react";
 import { ApiResponse } from "@/types/ApiResponse";
+import getPhotoURL from "@/utils/getPhotoURL";
 
 const axios = setupCache(Axios.create());
 
@@ -97,7 +98,7 @@ async function fetchPokemonMainDetails(initialResults: NamedAPIResource[]): Prom
     const pokemonPromises = initialResults.map(async (item) => {
       const response = await axios.get(item.url);
       const { id, name, types } = response.data;
-      const photoUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${id}.png`;
+      const photoUrl = getPhotoURL(id);
       const pokemon: Pokemon = {
         id: id,
         name: name,

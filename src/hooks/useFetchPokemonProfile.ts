@@ -3,13 +3,15 @@ import {
   PokemonProfile,
   PokemonMove,
   PokemonStat,
+  EvolutionChain,
 } from "@/types/PokemonProfile";
 import Axios, { AxiosResponse } from "axios";
 import { setupCache } from "axios-cache-interceptor";
 import { useEffect, useState } from "react";
 import { ApiResponse } from "@/types/ApiResponse";
 import { Pokemon } from "@/types/Pokemon";
-import { getWeaknesses } from "@/utils/getWeaknesses";
+import getWeaknesses from "@/utils/getWeaknesses";
+import getPhotoURL from "@/utils/getPhotoURL";
 
 const axios = setupCache(Axios.create());
 
@@ -97,7 +99,7 @@ async function fetchAbilities(abilities: any): Promise<PokemonAbility[]> {
           name: string;
           url: string;
         };
-      }) : Promise<PokemonAbility> => {
+      }): Promise<PokemonAbility> => {
         const response = await axios.get(ability.url);
         //ability effect in english language
         const effect =
@@ -147,17 +149,42 @@ async function fetchMoves(moves: any): Promise<PokemonMove[]> {
     );
 
     const pokemonMoves: PokemonMove[] = await Promise.all(movesPromises);
-    
+
     return pokemonMoves;
   } catch (error: unknown) {
     throw error;
   }
 }
 
-async function fetchEvolutionChain(
-  id: number
-): Promise<Pick<Pokemon, "id" | "name" | "photo">> {
-  throw new Error("Function not implemented.");
+async function fetchEvolutionChain(id: number): Promise<EvolutionChain> {
+  const url = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
+  try {
+    const speciesResponse = await axios.get(url);
+    const evolutionChainURL = speciesResponse.data.evolution_chain.url;
+    const evolutionChainResponse = await axios.get(evolutionChainURL);
+    const chain = evolutionChainResponse.data.chain;
+
+    // Function to build the evolution chain recursively
+    const buildEvolutionChain = (chainData: any): EvolutionChain => {
+      const currentPokemon = chainData.species;
+
+      const evolution: EvolutionChain = {
+        name: currentPokemon.name,
+        photo: getPhotoURL(id),
+        evolvesTo: chainData.evolves_to.length
+          ? chainData.evolves_to.map(buildEvolutionChain) // Recursively build evolvesTo
+          : [],
+      };
+
+      return evolution;
+    };
+
+    // Return the first evolution chain starting point
+    const evolutionChain = buildEvolutionChain(chain);
+    return evolutionChain;
+  } catch (error: unknown) {
+    throw error;
+  }
 }
 
 function processCries(cries: any): string {

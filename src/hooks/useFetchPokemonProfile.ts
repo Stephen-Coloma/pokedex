@@ -10,8 +10,8 @@ import { setupCache } from "axios-cache-interceptor";
 import { useEffect, useState } from "react";
 import { ApiResponse } from "@/types/ApiResponse";
 import { Pokemon } from "@/types/Pokemon";
-import getWeaknesses from "@/utils/getWeaknesses";
-import getPhotoURL from "@/utils/getPhotoURL";
+import getWeaknesses from "@/lib/getWeaknesses";
+import getPhotoURL from "@/lib/getPhotoURL";
 
 const axios = setupCache(Axios.create());
 

@@ -3,7 +3,7 @@ import Axios, { AxiosResponse } from "axios";
 import { setupCache } from "axios-cache-interceptor";
 import { useEffect, useState } from "react";
 import { ApiResponse } from "@/types/ApiResponse";
-import getPhotoURL from "@/utils/getPhotoURL";
+import getPhotoURL from "@/lib/getPhotoURL";
 
 const axios = setupCache(Axios.create());
 

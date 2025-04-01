@@ -42,7 +42,7 @@ if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
  * managing errors and loading states in UI.
  */
 export function useFetchAllPokemons(): ApiResponse<Pokemon[]> {
-  const url = "https://pokeapi.co/api/v2/pokemon/?limit=1302&offset=0"
+  const url = "https://pokeapi.co/api/v2/pokemon/?limit=1025&offset=0"
   const [status, setStatus] = useState<number>(0);
   const [statusText, setStatusText] = useState<string>("");
   const [data, setData] = useState<Pokemon[] | null>(null);

@@ -114,6 +114,6 @@ async function fetchPokemonMainDetails(initialResults: NamedAPIResource[]): Prom
 
     return pokemonResults;
   } catch (error) {
-    throw new Error("Failed to fetch Pokémon details");
+    throw error;
   }
 }

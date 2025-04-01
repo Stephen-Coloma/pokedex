@@ -215,7 +215,7 @@ async function fetchEvolutionChain(id: number): Promise<EvolutionChain> {
  */
 function processStats(stats: any): PokemonStat {
   try {
-    let pokemonStats: PokemonStat = {
+    const pokemonStats: PokemonStat = {
       hp: 0,
       attack: 0,
       defense: 0,

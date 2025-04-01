@@ -54,7 +54,7 @@ export function useFetchPokemonProfile({
       const formattedAbilities = await fetchAbilities(abilities);
       const formattedMoves = await fetchMoves(moves);
       const evolutionChainData = await fetchEvolutionChain(id);
-      const formattedCry = processCries(cries);
+      const latestCry = cries.latest;
       const formattedStats = processStats(stats);
       const weaknesses = getWeaknesses(type);
 
@@ -68,7 +68,7 @@ export function useFetchPokemonProfile({
         baseExperience: base_experience,
         abilities: formattedAbilities,
         moves: formattedMoves,
-        cry: formattedCry,
+        cry: latestCry,
         stats: formattedStats,
         weaknesses: weaknesses,
         evolutionChain: evolutionChainData,
@@ -187,10 +187,45 @@ async function fetchEvolutionChain(id: number): Promise<EvolutionChain> {
   }
 }
 
-function processCries(cries: any): string {
-  throw new Error("Function not implemented.");
-}
-
 function processStats(stats: any): PokemonStat {
-  throw new Error("Function not implemented.");
+  try {
+    let pokemonStats: PokemonStat = {
+      hp: 0,
+      attack: 0,
+      defense: 0,
+      specialAttack: 0,
+      specialDefense: 0,
+      speed: 0,
+    };
+
+    // loop each stats
+    stats.forEach((stat: { stat: { name: string }; base_stat: number }) => {
+      switch (stat.stat.name) {
+        case "hp":
+          pokemonStats.hp = stat.base_stat;
+          break;
+        case "attack":
+          pokemonStats.attack = stat.base_stat;
+          break;
+        case "defense":
+          pokemonStats.defense = stat.base_stat;
+          break;
+        case "special-attack":
+          pokemonStats.specialAttack = stat.base_stat;
+          break;
+        case "special-defense":
+          pokemonStats.specialDefense = stat.base_stat;
+          break;
+        case "speed":
+          pokemonStats.speed = stat.base_stat;
+          break;
+        default:
+          console.warn(`Unknown stat name: ${stat.stat.name}`);
+      }
+    });
+
+    return pokemonStats;
+  } catch (error) {
+    throw error;
+  }
 }

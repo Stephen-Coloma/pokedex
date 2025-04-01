@@ -1,14 +1,25 @@
-'use client'
+"use client";
 
-import { useFetchAllPokemons } from "@/hooks/useFetchPokemons";
+import { useFetchPokemonProfile } from "@/hooks/useFetchPokemonProfile";
+import { Pokemon } from "@/types/Pokemon";
+import getPhotoURL from "@/utils/getPhotoURL";
 
 export default function Home() {
-  const{ status, statusText, data, error, loading } = useFetchAllPokemons();
+  const pokemon: Pokemon = {
+    id: 132,
+    name: "bulbasaur",
+    photo: getPhotoURL(132),
+    type: ["Grass"],
+  };
 
-  console.log(data);
-  
+  const { status, statusText, data, error, loading } =
+    useFetchPokemonProfile(pokemon);
 
-  return (
-    <h1>Hello world</h1>
-  );
+  return(
+    <>
+      <img src={pokemon.photo} alt="" />
+      <audio id="pokemonCry" src="https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/132.ogg" preload="auto"></audio>
+
+    </>
+  )
 }

@@ -89,6 +89,12 @@ export function useFetchPokemonProfile({
   return { status, statusText, data, error, loading };
 }
 
+/**
+ * This function fetches additional details of the abilities that a pokemon possess.
+ *
+ * @param abilities abilities that are from pokemon endpoint call.
+ * @returns the pokemon abilities (in array) showing name and effect of each ability
+ */
 async function fetchAbilities(abilities: any): Promise<PokemonAbility[]> {
   try {
     const abilityPromises = abilities.map(
@@ -122,6 +128,12 @@ async function fetchAbilities(abilities: any): Promise<PokemonAbility[]> {
   }
 }
 
+/**
+ * This function fetches the first four moves of the pokemon.
+ *
+ * @param moves moves that are from pokemon endpoint call.
+ * @returns a formatted moves for easier display on the UI
+ */
 async function fetchMoves(moves: any): Promise<PokemonMove[]> {
   try {
     const movesPromises = moves.slice(0, 4).map(
@@ -156,6 +168,13 @@ async function fetchMoves(moves: any): Promise<PokemonMove[]> {
   }
 }
 
+/**
+ * This function fetches the evolution chain of a pokemon.
+ *
+ * @param id the id of the pokemon where you want to find its evolution chain
+ * @returns the evolution chain of the pokemon. empty array if there are no evolution.
+ * It uses self-referential type to represent nested evolution
+ */
 async function fetchEvolutionChain(id: number): Promise<EvolutionChain> {
   const url = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
   try {
@@ -187,6 +206,13 @@ async function fetchEvolutionChain(id: number): Promise<EvolutionChain> {
   }
 }
 
+/**
+ * This function formats the stats from the pokemon endpoint call.
+ * This makes it easier to display in UI as unnecessary fields are removed.
+ *
+ * @param stats that comes from the pokemon endpoint for further preprocesing
+ * @returns pokemon stats
+ */
 function processStats(stats: any): PokemonStat {
   try {
     let pokemonStats: PokemonStat = {

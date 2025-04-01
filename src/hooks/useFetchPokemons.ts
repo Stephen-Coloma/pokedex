@@ -102,7 +102,7 @@ async function fetchPokemonMainDetails(initialResults: NamedAPIResource[]): Prom
       const pokemon: Pokemon = {
         id: id,
         name: name,
-        type: types.map((t: { type: { name: string } }) => t.type.name),
+        types: types.map((t: { type: { name: string } }) => t.type.name),
         photo: photoUrl,
       };
 

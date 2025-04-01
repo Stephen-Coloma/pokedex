@@ -9,7 +9,7 @@ export interface Pokemon {
   id: number;
   name: string;
   photo: string;
-  type: PokemonType[];
+  types: PokemonType[];
 }
 
 /**

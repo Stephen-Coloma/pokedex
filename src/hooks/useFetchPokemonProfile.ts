@@ -24,7 +24,7 @@ export function useFetchPokemonProfile({
   id,
   name,
   photo,
-  type,
+  types,
 }: Pokemon): ApiResponse<PokemonProfile> {
   const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
   const [status, setStatus] = useState<number>(0);
@@ -56,13 +56,13 @@ export function useFetchPokemonProfile({
       const evolutionChainData = await fetchEvolutionChain(id);
       const latestCry = cries.latest;
       const formattedStats = processStats(stats);
-      const weaknesses = getWeaknesses(type);
+      const weaknesses = getWeaknesses(types);
 
       const pokemonProfile: PokemonProfile = {
         id: id,
         name: name,
         photo: photo,
-        type: type,
+        types: types,
         height: height,
         weight: weight,
         baseExperience: base_experience,

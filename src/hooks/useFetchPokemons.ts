@@ -3,8 +3,7 @@ import Axios, { AxiosResponse } from "axios";
 import { setupCache } from "axios-cache-interceptor";
 import { useEffect, useState } from "react";
 
-const instance = Axios.create();
-const axios = setupCache(instance);
+const axios = setupCache(Axios.create());
 
 /**
  * Represents the complete state of an API response, including data, loading state,
@@ -45,13 +44,21 @@ export type NamedAPIResource = {
   url: string;
 };
 
+// The array that represents the cached pokemon array in the session storage.
+let pokemonArrayCached: Pokemon[] | null;
+
+// Check if we're in the browser before accessing sessionStorage. Workaround to solve reference error.
+if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+  pokemonArrayCached = JSON.parse(sessionStorage.getItem("pokemonCache") || "null");
+}
+
 /**
  * A custom hook that utilized for fetching pokemon array for the homepage.
- * @param url specified url with offset and limits as query parameters
  * @returns an API response type of object. Useful for managing errors
  * and loading states in UI.
  */
-export function useFetchPokemons(url: string): ApiResponse {
+export function useFetchAllPokemons(): ApiResponse {
+  const url = "https://pokeapi.co/api/v2/pokemon/?limit=1302&offset=0"
   const [status, setStatus] = useState<number>(0);
   const [statusText, setStatusText] = useState<string>("");
   const [data, setData] = useState<Pokemon[] | null>(null);
@@ -61,6 +68,15 @@ export function useFetchPokemons(url: string): ApiResponse {
   // This method is used for firing the get request
   const executeGetRequest = async (url: string) => {
     setLoading(true);
+
+    if (pokemonArrayCached) {
+      // Use cached data if available
+      setStatus(200);
+      setStatusText("OK");
+      setData(pokemonArrayCached);
+      setLoading(false);
+      return;
+    }
 
     try {
       const response: AxiosResponse = await axios.get(url);
@@ -72,6 +88,8 @@ export function useFetchPokemons(url: string): ApiResponse {
         response.data.results as NamedAPIResource[]
       );
 
+      //save a copy to session storage
+      sessionStorage.setItem("pokemonCache", JSON.stringify(pokemonArray));
       setData(pokemonArray);
     } catch (error: unknown) {
       setError(error);

@@ -97,7 +97,7 @@ async function fetchAbilities(abilities: any): Promise<PokemonAbility[]> {
           name: string;
           url: string;
         };
-      }) => {
+      }) : Promise<PokemonAbility> => {
         const response = await axios.get(ability.url);
         //ability effect in english language
         const effect =
@@ -121,7 +121,37 @@ async function fetchAbilities(abilities: any): Promise<PokemonAbility[]> {
 }
 
 async function fetchMoves(moves: any): Promise<PokemonMove[]> {
-  throw new Error("Function not implemented.");
+  try {
+    const movesPromises = moves.slice(0, 4).map(
+      async ({
+        move,
+      }: {
+        move: {
+          name: string;
+          url: string;
+        };
+      }): Promise<PokemonMove> => {
+        const response = await axios.get(move.url);
+        const { name, power, accuracy, effect_entries, type } = response.data;
+        //move short effect in english language
+        const shortEffect =
+          effect_entries[effect_entries.length - 1].short_effect;
+        return {
+          name: name,
+          power: power || 0,
+          accuracy: accuracy || 0,
+          effect: shortEffect,
+          type: type.name,
+        };
+      }
+    );
+
+    const pokemonMoves: PokemonMove[] = await Promise.all(movesPromises);
+    
+    return pokemonMoves;
+  } catch (error: unknown) {
+    throw error;
+  }
 }
 
 async function fetchEvolutionChain(

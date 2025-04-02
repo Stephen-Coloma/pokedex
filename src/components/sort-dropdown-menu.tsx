@@ -12,7 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowDown01, ArrowDown10, ArrowDownAZ, ArrowDownWideNarrow, ArrowDownZA, ArrowUpDown } from "lucide-react";
+import { ArrowDown01, ArrowDown10, ArrowDownAZ, ArrowDownZA } from "lucide-react";
+import { Separator } from "./ui/separator";
 
 export type SortDropDownMenuProps = {
   onSortChange: (sortOption: string) => void;
@@ -38,7 +39,7 @@ export function SortDropDownMenu({onSortChange}: SortDropDownMenuProps) {
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-[200px]">
+      <DropdownMenuContent align="start" className="w-fit">
         <DropdownMenuRadioGroup
           value={sortOption}
           onValueChange={(value) => {
@@ -47,16 +48,18 @@ export function SortDropDownMenu({onSortChange}: SortDropDownMenuProps) {
           }}
 
         >
-          <DropdownMenuRadioItem value="name-asc">
+          <DropdownMenuLabel className="text-xs md:text-sm tracking-wider font-light">Sort Pokemon</DropdownMenuLabel>
+          <Separator></Separator>
+          <DropdownMenuRadioItem value="name-asc" className="text-xs md:text-sm tracking-wider font-light">
             Name (A - Z)
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="name-desc">
+          <DropdownMenuRadioItem value="name-desc" className="text-xs md:text-sm tracking-wider font-light">
             Name (Z - A)
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="id-asc">
+          <DropdownMenuRadioItem value="id-asc" className="text-xs md:text-sm tracking-wider font-light">
             ID (Lowest - Highest)
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="id-desc">
+          <DropdownMenuRadioItem value="id-desc" className="text-xs md:text-sm tracking-wider font-light">
             ID (Highest - Lowest)
           </DropdownMenuRadioItem>
 

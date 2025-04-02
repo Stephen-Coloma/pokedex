@@ -76,7 +76,7 @@ export function useFetchPokemons(limit: number, offset: number, autoFetch: boole
  * A helper function that fetches individual pokemon details such as id, name, photos and types.
  * @param initialResults the initial results of the api call to fetch all pokemon
  */
-async function fetchPokemonMainDetails(initialResults: NamedAPIResource[]): Promise<Pokemon[]> {
+export async function fetchPokemonMainDetails(initialResults: NamedAPIResource[]): Promise<Pokemon[]> {
   try {
     const pokemonPromises = initialResults.map(async (item) => {
       const response = await axios.get(item.url);

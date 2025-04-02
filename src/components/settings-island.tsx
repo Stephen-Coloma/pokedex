@@ -1,12 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  ArrowUpDown,
   Volume2,
   VolumeX,
-  Moon,
-  Sun,
   Loader2,
 } from "lucide-react";
 
@@ -16,25 +13,29 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { SortDropDownMenu } from "./sort-dropdown-menu";
 import { ModeToggle } from "./mode-toggle";
-import { useTheme } from "next-themes";
+import { Pokemon } from "@/types/Pokemon";
+import { useFetchPokemons } from "@/hooks/useFetchPokemons";
 
 type SettingsIslandProps = {
   onSortChange: (sortOption: string) => void;
+  onLoadMorecards: (loadedCards: Pokemon[]) => void;
+  limit: number,
+  offset: number
 }
 
-export default function SettingsIsland({onSortChange}: SettingsIslandProps) {
+export default function SettingsIsland({onSortChange, onLoadMorecards, limit, offset}: SettingsIslandProps) {
+  const { status, statusText, data, error, loading, executeGetRequest} = useFetchPokemons(limit, offset, false);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const isDark = theme === "dark";
 
   const handleLoadMore = () => {
-    setIsLoading(true);
-    // Simulate loading
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
+    executeGetRequest();
   };
+
+  useEffect(() => {
+    if (status === 200 && data) {
+      onLoadMorecards(data as Pokemon[]); // Append new cards
+    }
+  }, [status, data]); // Runs when the data or status changes
 
   return (
     <div className="flex justify-center items-center w-fit">
@@ -72,10 +73,10 @@ export default function SettingsIsland({onSortChange}: SettingsIslandProps) {
           <Button
             size="sm"
             onClick={handleLoadMore}
-            disabled={isLoading}
+            disabled={loading}
             className="ml-auto"
           >
-            {isLoading ? (
+            {loading ? (
               <Loader2 className="h-4 w-4 animate-spin mr-1" />
             ) : null}
             See More

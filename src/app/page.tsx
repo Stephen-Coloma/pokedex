@@ -2,49 +2,48 @@
 
 import { PokemonCard } from "@/components/pokemon-card";
 import SettingsIsland from "@/components/settings-island";
-import { Button } from "@/components/ui/button";
-import { useFetchAllPokemons } from "@/hooks/useFetchPokemons";
-import { useState } from "react";
+import { useFetchPokemons } from "@/hooks/useFetchPokemons";
+import { Pokemon } from "@/types/Pokemon";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { status, statusText, data, error, loading } = useFetchAllPokemons(10, 0);
-  const [cardPerPage, setCardPerPage] = useState<number>(10);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [sortOption, setSortOption] = useState<string>("id-ascending");
+  const limit = 10;
+  const [offset, setOffset] = useState<number>(0);
+  const { status, statusText, data, error, loading } = useFetchPokemons(limit, offset);
+  const [visibleCards, setVisibleCards] = useState<Pokemon[]>([]);
 
-  const totalPages = data ? Math.ceil(data.length / cardPerPage) : 0;
+  useEffect(() => {
+    if (status === 200) {
+      setVisibleCards(data as Pokemon[]);
+    }
+  }, [loading]);
 
-  //appy sorting to the data when it is available
-  // if negative value, a comes before b, otherwise a comes after b 
-  const sortedData = data
-    ? [...data].sort((pokemon1, pokemon2) => {
-        if (sortOption === "name-asc")
-          return pokemon1.name.localeCompare(pokemon2.name);
-        if (sortOption === "name-desc")
-          return pokemon2.name.localeCompare(pokemon1.name);
-        if (sortOption === "id-asc") return pokemon1.id - pokemon2.id;
-        if (sortOption === "id-desc") return pokemon2.id - pokemon1.id;
-        return 0;
-      })
-    : [];
-
-  //pagination
-  const indexOfLastCard = currentPage * cardPerPage; //index 1 * 10 = 10
-  const indexOfFirstCard = indexOfLastCard - cardPerPage; // 10 - 10 = 0;
-  const visibleCards = sortedData
-    ? sortedData.slice(indexOfFirstCard, indexOfLastCard)
-    : [];
-    
   const handleSortChange = (sortOptionChosen: string) => {
-    setSortOption(sortOptionChosen);
+    // if negative value, a comes before b, otherwise a comes after b
+    const sortedCards = visibleCards
+      ? [...visibleCards].sort((pokemon1, pokemon2) => {
+          if (sortOptionChosen === "name-asc")
+            return pokemon1.name.localeCompare(pokemon2.name);
+          if (sortOptionChosen === "name-desc")
+            return pokemon2.name.localeCompare(pokemon1.name);
+          if (sortOptionChosen === "id-asc") return pokemon1.id - pokemon2.id;
+          if (sortOptionChosen === "id-desc") return pokemon2.id - pokemon1.id;
+          return 0;
+        })
+      : [];
+
+    setVisibleCards(sortedCards);
+  };
+
+  const handleLoadMoreCards = (loadedCards: Pokemon[]) => {
+    setVisibleCards((prev) => [...prev, ...loadedCards]);
+    setOffset((prev) => (prev + limit)); //10 + 10;
   };
 
   return (
-    <>
-      <div className="mx-auto container w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 p-5 lg:gap-8 lg:p-12">
-        {loading &&
-          <h1>loading</h1>
-        }
+    <div className="container mx-auto">
+      <div className="w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 p-5 lg:gap-8 lg:p-12">
+        {loading && <h1>loading</h1>}
 
         {visibleCards &&
           visibleCards.map((pokemon, index) => (
@@ -52,11 +51,11 @@ export default function Home() {
           ))}
       </div>
 
-      <div className="h-[60px] md:h-[60px] 2xl:h-[0px]">
+      <div className="h-[60px] md:h-[60px] lg:h-[40px]">
         <div className="fixed bottom-0 left-0 right-0 w-full p-4 z-10 flex justify-center w-full">
-          <SettingsIsland onSortChange={handleSortChange} />
+          <SettingsIsland onSortChange={handleSortChange} onLoadMorecards={handleLoadMoreCards} limit={limit} offset={offset+limit}/>
         </div>
       </div>
-    </>
+    </div>
   );
 }

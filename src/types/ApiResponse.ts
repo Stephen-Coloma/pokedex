@@ -14,4 +14,5 @@ export type ApiResponse<T> = {
   data: T | null;
   error: any;
   loading: boolean;
+  executeGetRequest: () => Promise<void>
 };

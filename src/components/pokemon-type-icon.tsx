@@ -1,5 +1,6 @@
 import { PokemonType } from "@/types/Pokemon";
 import { Badge } from "./ui/badge";
+import { getTypeColor } from "@/lib/colors";
 
 export type PokemonTypeIconProps = {
   type: PokemonType;
@@ -7,8 +8,11 @@ export type PokemonTypeIconProps = {
 
 export function PokemonTypeIcon({ type }: PokemonTypeIconProps) {
   return (
-    <Badge key={type} className="flex align-center bg-black/20 justify-center text-white text-base font-medium px-3 py-1 gap-2">
-      <img src={`../icons/${type}.svg`} alt={type} className="h-4 w-4" />
+    <Badge 
+      className={`flex align-center justify-center rounded-full text-white text-xs font-medium px-2 py-1 gap-2`}
+      style={{backgroundColor: getTypeColor(type)}}
+    >
+      <img src={`../icons/${type}.svg`} alt={type} className="h-3 w-3" />
       {type}
     </Badge>
   );

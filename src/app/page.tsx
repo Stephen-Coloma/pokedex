@@ -1,15 +1,13 @@
 "use client";
 
-import { ModeToggle } from "@/components/mode-toggle";
 import { PokemonCard } from "@/components/pokemon-card";
-import { PokemonCardSkeleton } from "@/components/pokemon-card-skeleton";
-import { SortDropDownMenu } from "@/components/sort-dropdown-menu";
+import SettingsIsland from "@/components/settings-island";
 import { Button } from "@/components/ui/button";
 import { useFetchAllPokemons } from "@/hooks/useFetchPokemons";
 import { useState } from "react";
-``;
+
 export default function Home() {
-  const { status, statusText, data, error, loading } = useFetchAllPokemons();
+  const { status, statusText, data, error, loading } = useFetchAllPokemons(10, 0);
   const [cardPerPage, setCardPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [sortOption, setSortOption] = useState<string>("id-ascending");
@@ -20,12 +18,12 @@ export default function Home() {
   // if negative value, a comes before b, otherwise a comes after b 
   const sortedData = data
     ? [...data].sort((pokemon1, pokemon2) => {
-        if (sortOption === "name-ascending")
+        if (sortOption === "name-asc")
           return pokemon1.name.localeCompare(pokemon2.name);
-        if (sortOption === "name-descending")
+        if (sortOption === "name-desc")
           return pokemon2.name.localeCompare(pokemon1.name);
-        if (sortOption === "id-ascending") return pokemon1.id - pokemon2.id;
-        if (sortOption === "id-descending") return pokemon2.id - pokemon1.id;
+        if (sortOption === "id-asc") return pokemon1.id - pokemon2.id;
+        if (sortOption === "id-desc") return pokemon2.id - pokemon1.id;
         return 0;
       })
     : [];
@@ -51,20 +49,15 @@ export default function Home() {
 
   return (
     <>
-      <ModeToggle />
-      <SortDropDownMenu onSortChange={handleSortChange}></SortDropDownMenu>
-      <div className="mx-auto w-fit grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
+      <SettingsIsland onSortChange={handleSortChange}></SettingsIsland>
+      <div className="mx-auto container w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 p-5 lg:gap-8 lg:p-12">
         {loading &&
-          new Array(8)
-            .fill("t")
-            .map((_, index) => <PokemonCardSkeleton key={index} />)}
+          <h1>loading</h1>
+        }
 
         {visibleCards &&
           visibleCards.map((pokemon, index) => (
-            // 1by1 grid to contain the card
-            <div key={index} className="grid grid-cols-1 pt-10 px-5">
-              <PokemonCard {...pokemon} />
-            </div>
+              <PokemonCard key={index} {...pokemon} />
           ))}
       </div>
 

@@ -28,21 +28,13 @@ export type NamedAPIResource = {
   url: string;
 };
 
-// The array that represents the cached pokemon array in the session storage.
-let pokemonArrayCached: Pokemon[] | null;
-
-// Check if we're in the browser before accessing sessionStorage. Workaround to solve reference error.
-if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
-  pokemonArrayCached = JSON.parse(sessionStorage.getItem("pokemonCache") || "null");
-}
-
 /**
  * A custom hook that utilized for fetching pokemon array for the homepage.
  * @returns an API response type of object that contains pokemon array. Useful for 
  * managing errors and loading states in UI.
  */
-export function useFetchAllPokemons(): ApiResponse<Pokemon[]> {
-  const url = "https://pokeapi.co/api/v2/pokemon/?limit=1025&offset=0"
+export function useFetchAllPokemons(limit: number, offset: number): ApiResponse<Pokemon[]> {
+  const url = `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`
   const [status, setStatus] = useState<number>(0);
   const [statusText, setStatusText] = useState<string>("");
   const [data, setData] = useState<Pokemon[] | null>(null);
@@ -53,15 +45,6 @@ export function useFetchAllPokemons(): ApiResponse<Pokemon[]> {
   const executeGetRequest = async (url: string) => {
     setLoading(true);
 
-    if (pokemonArrayCached) {
-      // Use cached data if available
-      setStatus(200);
-      setStatusText("OK");
-      setData(pokemonArrayCached);
-      setLoading(false);
-      return;
-    }
-
     try {
       const response: AxiosResponse = await axios.get(url);
       setStatus(response.status);
@@ -71,9 +54,7 @@ export function useFetchAllPokemons(): ApiResponse<Pokemon[]> {
       const pokemonArray = await fetchPokemonMainDetails(
         response.data.results as NamedAPIResource[]
       );
-
-      //save a copy to session storage
-      sessionStorage.setItem("pokemonCache", JSON.stringify(pokemonArray));
+      
       setData(pokemonArray);
     } catch (error: unknown) {
       setError(error);

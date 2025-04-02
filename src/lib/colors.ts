@@ -23,26 +23,26 @@ const typeGradients: Record<PokemonType, string> = {
 }
 
 //Type mapping for pokemon type
-export const typeColors: Record<PokemonType, string> = {
-  normal: "bg-gray-400",
-  fire: "bg-orange-500",
-  water: "bg-blue-500",
-  electric: "bg-yellow-400",
-  grass: "bg-green-500",
-  ice: "bg-cyan-400",
-  fighting: "bg-red-500",
-  poison: "bg-purple-500",
-  ground: "bg-amber-500",
-  flying: "bg-indigo-400",
-  psychic: "bg-pink-500",
-  bug: "bg-lime-500",
-  rock: "bg-stone-500",
-  ghost: "bg-violet-500",
-  dragon: "bg-indigo-500",
-  dark: "bg-gray-800",
-  steel: "bg-slate-500",
-  fairy: "bg-pink-400",
-}
+const typeColors: Record<PokemonType, string> = {
+  normal: "#A8A77A",
+  fire: "#EE8130",
+  water: "#6390F0",
+  electric: "#F7D02C",
+  grass: "#7AC74C",
+  ice: "#96D9D6",
+  fighting: "#C22E28",
+  poison: "#A33EA1",
+  ground: "#E2BF65",
+  flying: "#A98FF3",
+  psychic: "#F95587",
+  bug: "#A6B91A",
+  rock: "#B6A136",
+  ghost: "#735797",
+  dragon: "#6F35FC",
+  dark: "#705746",
+  steel: "#B7B7CE",
+  fairy: "#D685AD"
+};
 
 export function getTypeGradient(types: PokemonType[]){
   if (types.length === 0) return "bg-gradient-to-br from-gray-300 to-gray-400"
@@ -56,4 +56,11 @@ export function getTypeGradient(types: PokemonType[]){
     const secondTypeTo = typeGradients[types[1]]?.split(" ")[1];
 
     return `bg-gradient-to-br ${firstTypeFrom} ${secondTypeTo}`
+}
+
+
+export function getTypeColor(type: PokemonType): string{
+  console.log(typeColors[type]);
+  
+  return typeColors[type];
 }

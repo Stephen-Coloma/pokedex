@@ -1,11 +1,12 @@
 'use client'
 
 import { Pokemon } from "@/types/Pokemon";
-import { getTypeGradient } from "@/lib/getTypeGradient";
+import { getTypeColor } from "@/lib/colors";
 import { PokemonTypeIcon } from "./pokemon-type-icon";
 import { Badge } from "./ui/badge";
 import { Sparkles } from "lucide-react";
 import { useState } from "react";
+import { Card } from "./ui/card";
 
 export type PokemonCardProps = Pokemon;
 
@@ -14,13 +15,12 @@ export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
 
   return (
     // main container
-    <div className={`relative w-full h-[fit] max-w-xs mx-auto rounded-xl ${getTypeGradient(types)}`}>
+    <Card className={`border-2 p-0 relative w-full h-[fit] max-w-xs mx-auto rounded-xl bg-muted`}>
 
       {/* Custom shaped card  */}
       <div
-        className={`relative ${getTypeGradient(types)} rounded-xl shadow-lg`}
+        className={`relative rounded-xl shadow-lg`}
         style={{
-          aspectRatio: "1/1.3",
           clipPath:
             "polygon(0% 0%, 100% 0%, 100% 20%, 90% 25%, 90% 75%, 100% 80%, 100% 100%, 0% 100%, 0% 80%, 10% 75%, 10% 25%, 0% 20%)",
         }}
@@ -34,46 +34,41 @@ export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
           backgroundRepeat: "no-repeat",
         }} >
 
-          {/* Black corner accent */}
-          <div className="absolute top-0 left-0 w-8 h-8 bg-primary rounded-tl-xl rounded-br-xl z-10"></div>
-
           {/* Card header */}
-          <div className="pt-4 pb-4 px-6 relative">
-            <div className="flex justify-between items-center ml-6">
-              <h3 className="text-2xl font-bold text-white uppercase tracking-wide">{name}</h3>
-              <Badge className="bg-black/20 text-white rounded-full py-1 px-3 text-base font-bold">
+          <div className="pt-4 px-4 relative">
+            <div className="flex justify-between items-center">
+              <h3 className="text-md sm:text-md md:text-lg font-bold text-primary capitalize tracking-wide">{name}</h3>
+              <Badge 
+                className="text-white bg-primary/30 rounded-full py-1 px-3 text-xs font-bold">
                 # {id.toString().padStart(3, "0")}
               </Badge>
             </div>
-            <span className="text-sm text-white/80 uppercase tracking-wider ml-6">Pokémon</span>
           </div>
 
           {/* Card image area */}
           <div
             className={`mx-4 flex justify-center items-center`}
-            style={{
-              height: "calc(100% - 140px)",
-            }}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
             <div className="relative w-full h-full flex justify-center items-center p-4">
               {/* Circular glow behind image */}
               <div
-                className={`absolute rounded-full bg-white/30 blur-md transition-all duration-300 ${isHovering ? "scale-105 opacity-70" : "scale-90 opacity-30"}`}
+                className={`absolute rounded-full blur-md transition-all duration-300 ${isHovering ? `scale-105 opacity-70` : "scale-90 opacity-30"}`}
                 style={{
-                  width: "80%",
-                  height: "80%",
-                  boxShadow: isHovering ? `0 0 50px 10px rgba(255, 255, 255, 1)` : "none",
+                  backgroundColor: (isHovering ? getTypeColor(types[0]) : ""),
+                  width: "50%",
+                  height: "50%",
+                  boxShadow: isHovering ? `0 0 10px 20px rgba(255, 255, 255, .3)` : "none",
                 }}
               />
 
               {/* Pokemon image with pop-up effect */}
-              <div className="relative z-10">
+              <div className="relative z-10 select-none">
                 <img
                   src={photo}
                   alt={name}
-                  className={`object-contain mx-auto max-h-[85%] max-w-[85%] transition-all duration-300 ${isHovering ? "scale-110 drop-shadow-2xl" : "scale-100"}`}
+                  className={`object-contain mx-auto max-h-full max-w-full transition-all duration-300 select-none ${isHovering ? "scale-110 drop-shadow-2xl" : "scale-100"}`}
                 />
 
                 {/* Shiny sparkle effects that appear on hover */}
@@ -101,7 +96,7 @@ export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
           </div>
 
           {/* Card footer */}
-          <div className="flex p-4 px-6 flex justify-center items-center gap-2">
+          <div className="flex px-6 pb-4 flex justify-center items-center gap-2">
               {types.map((type, index) => (
                 <PokemonTypeIcon key={index} type={type}></PokemonTypeIcon>
               ))}
@@ -109,6 +104,6 @@ export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
 
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

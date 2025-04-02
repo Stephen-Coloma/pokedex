@@ -41,7 +41,7 @@ export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
           <div className="pt-4 pb-4 px-6 relative">
             <div className="flex justify-between items-center ml-6">
               <h3 className="text-2xl font-bold text-white uppercase tracking-wide">{name}</h3>
-              <Badge className="bg-white/20 text-white rounded-full py-1 px-3 text-base font-bold">
+              <Badge className="bg-black/20 text-white rounded-full py-1 px-3 text-base font-bold">
                 # {id.toString().padStart(3, "0")}
               </Badge>
             </div>

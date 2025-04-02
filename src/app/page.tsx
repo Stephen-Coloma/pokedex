@@ -3,10 +3,11 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { PokemonCard } from "@/components/pokemon-card";
 import { PokemonCardSkeleton } from "@/components/pokemon-card-skeleton";
+import { SortDropDownMenu } from "@/components/sort-dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useFetchAllPokemons } from "@/hooks/useFetchPokemons";
 import { useState } from "react";
-
+``
 export default function Home() {
   const { status, statusText, data, error, loading } = useFetchAllPokemons();
   const [cardPerPage, setCardPerPage] = useState<number>(10);
@@ -31,6 +32,7 @@ export default function Home() {
   return (
     <>
       <ModeToggle/>
+      <SortDropDownMenu></SortDropDownMenu>
       <div className="mx-auto w-fit grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
         {loading &&
           new Array(8).fill('t').map((_, index) => (

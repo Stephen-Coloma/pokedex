@@ -9,11 +9,11 @@ export type PokemonTypeIconProps = {
 export function PokemonTypeIcon({ type }: PokemonTypeIconProps) {
   return (
     <Badge 
-      className={`flex align-center justify-center rounded-full text-white text-xs font-medium px-2 py-1 gap-2`}
+      className={`flex align-center justify-center rounded-full text-white text-xs font-medium px-1 py-1 sm:px-2 sm:py-1 gap-2`}
       style={{backgroundColor: getTypeColor(type)}}
     >
       <img src={`../icons/${type}.svg`} alt={type} className="h-3 w-3" />
-      {type}
+      <span className="hidden sm:inline-block">{type}</span>
     </Badge>
   );
 }

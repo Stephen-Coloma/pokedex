@@ -34,22 +34,13 @@ export default function Home() {
   const visibleCards = sortedData
     ? sortedData.slice(indexOfFirstCard, indexOfLastCard)
     : [];
-
-  const handlePreviousPage = () => {
-    setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev));
-  };
-
+    
   const handleSortChange = (sortOptionChosen: string) => {
     setSortOption(sortOptionChosen);
   };
 
   return (
     <>
-      <SettingsIsland onSortChange={handleSortChange}></SettingsIsland>
       <div className="mx-auto container w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 p-5 lg:gap-8 lg:p-12">
         {loading &&
           <h1>loading</h1>
@@ -57,13 +48,14 @@ export default function Home() {
 
         {visibleCards &&
           visibleCards.map((pokemon, index) => (
-              <PokemonCard key={index} {...pokemon} />
+            <PokemonCard key={index} {...pokemon} />
           ))}
       </div>
 
-      <div className="flex justify-center gap-4 w-full my-10">
-        <Button onClick={handlePreviousPage}>Prev</Button>
-        <Button onClick={handleNextPage}>Next</Button>
+      <div className="h-[60px] md:h-[60px] 2xl:h-[0px]">
+        <div className="fixed bottom-0 left-0 right-0 w-full p-4 z-10 flex justify-center w-full">
+          <SettingsIsland onSortChange={handleSortChange} />
+        </div>
       </div>
     </>
   );

@@ -1,10 +1,14 @@
 "use client";
 
+import { Header } from "@/components/header";
 import { PokemonCard } from "@/components/pokemon-card";
 import SettingsIsland from "@/components/settings-island";
+import { Separator } from "@/components/ui/separator";
 import { useFetchPokemons } from "@/hooks/useFetchPokemons";
 import { Pokemon } from "@/types/Pokemon";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import { Banner } from "@/components/banner";
 
 export default function Home() {
   const limit = 10;
@@ -42,6 +46,9 @@ export default function Home() {
 
   return (
     <div className="container mx-auto">
+      <Header></Header>
+      <Separator></Separator>
+      <Banner></Banner>
       <div className="w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 p-5 lg:gap-8 lg:p-12">
         {loading && <h1>loading</h1>}
 

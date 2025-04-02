@@ -37,9 +37,9 @@ export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
           {/* Card header */}
           <div className="pt-4 px-4 relative">
             <div className="flex justify-between items-center">
-              <h3 className="text-md sm:text-md md:text-lg font-bold text-primary capitalize tracking-wide">{name}</h3>
+              <h3 className="text-md sm:text-md md:text-lg font-medium text-primary capitalize tracking-wide">{name}</h3>
               <Badge 
-                className="text-white bg-primary/30 rounded-full py-1 px-3 text-xs font-bold">
+                className="text-white bg-primary/30 rounded-full py-1 px-3 text-xs font-light tracking-wider">
                 # {id.toString().padStart(3, "0")}
               </Badge>
             </div>

@@ -1,5 +1,6 @@
 import { PokemonType } from "@/types/Pokemon";
 import { Badge } from "./ui/badge";
+import { typeColors } from "@/lib/getTypeGradient";
 
 export type PokemonTypeIconProps = {
   type: PokemonType;

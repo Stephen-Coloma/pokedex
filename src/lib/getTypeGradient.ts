@@ -22,6 +22,28 @@ const typeGradients: Record<PokemonType, string> = {
   fairy: "from-pink-300 to-pink-500",
 }
 
+//Type mapping for pokemon type
+export const typeColors: Record<PokemonType, string> = {
+  normal: "bg-gray-400",
+  fire: "bg-orange-500",
+  water: "bg-blue-500",
+  electric: "bg-yellow-400",
+  grass: "bg-green-500",
+  ice: "bg-cyan-400",
+  fighting: "bg-red-500",
+  poison: "bg-purple-500",
+  ground: "bg-amber-500",
+  flying: "bg-indigo-400",
+  psychic: "bg-pink-500",
+  bug: "bg-lime-500",
+  rock: "bg-stone-500",
+  ghost: "bg-violet-500",
+  dragon: "bg-indigo-500",
+  dark: "bg-gray-800",
+  steel: "bg-slate-500",
+  fairy: "bg-pink-400",
+}
+
 export function getTypeGradient(types: PokemonType[]){
   if (types.length === 0) return "bg-gradient-to-br from-gray-300 to-gray-400"
 

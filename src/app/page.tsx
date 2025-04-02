@@ -29,7 +29,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="mx-auto w-fit grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-items-center">
+      <div className="mx-auto w-fit grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
         {loading &&
           new Array(8).fill('t').map((_, index) => (
             <PokemonCardSkeleton key={index}/>
@@ -38,7 +38,10 @@ export default function Home() {
 
         {visibleCards &&
           visibleCards.map((pokemon, index) => (
-            <PokemonCard key={index} {...pokemon} />
+            // 1by1 grid to contain the card
+            <div className="grid grid-cols-1 pt-10 px-5">
+              <PokemonCard key={index} {...pokemon} />
+            </div>
           ))}
       </div>
       

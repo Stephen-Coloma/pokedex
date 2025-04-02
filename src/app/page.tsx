@@ -9,6 +9,8 @@ import { Pokemon } from "@/types/Pokemon";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Banner } from "@/components/banner";
+import { SearchIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function Home() {
   const limit = 10;
@@ -45,11 +47,21 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto w-full px-5">
       <Header></Header>
       <Separator></Separator>
       <Banner></Banner>
-      <div className="w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 p-5 lg:gap-8 lg:p-12">
+
+      {/* Search */}
+      <div className="flex justify-end w-full">
+        <div className="flex items-center max-w-sm space-x-2 bg-muted rounded-lg px-2 py-2">
+          <SearchIcon className="h-4 w-4" />
+          <Input type="search" placeholder="Search by Name or Id" className="text-sm md:text-base w-full border-0 h-8 font-light tracking-wider" />
+        </div>
+      </div>
+
+
+      <div className="w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
         {loading && <h1>loading</h1>}
 
         {visibleCards &&

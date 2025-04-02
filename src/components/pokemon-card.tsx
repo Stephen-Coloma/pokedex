@@ -95,11 +95,11 @@ export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
               />
 
               {/* Pokemon image with pop-up effect */}
-              <div className="relative z-10 select-none">
+              <div className="relative z-10">
                 <img
                   src={photo}
                   alt={name}
-                  className={`object-contain mx-auto max-h-full max-w-full transition-all duration-300 select-none ${isHovering ? "scale-110 drop-shadow-2xl" : "scale-100"}`}
+                  className={`object-contain mx-auto max-h-full max-w-full transition-all duration-300 ${isHovering ? "scale-110 drop-shadow-2xl" : "scale-100"}`}
                 />
 
                 {/* Shiny sparkle effects that appear on hover */}

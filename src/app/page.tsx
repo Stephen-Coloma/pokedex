@@ -1,5 +1,6 @@
 "use client";
 
+import { ModeToggle } from "@/components/mode-toggle";
 import { PokemonCard } from "@/components/pokemon-card";
 import { PokemonCardSkeleton } from "@/components/pokemon-card-skeleton";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ export default function Home() {
 
   return (
     <>
+      <ModeToggle/>
       <div className="mx-auto w-fit grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
         {loading &&
           new Array(8).fill('t').map((_, index) => (
@@ -39,8 +41,8 @@ export default function Home() {
         {visibleCards &&
           visibleCards.map((pokemon, index) => (
             // 1by1 grid to contain the card
-            <div className="grid grid-cols-1 pt-10 px-5">
-              <PokemonCard key={index} {...pokemon} />
+            <div key={index} className="grid grid-cols-1 pt-10 px-5">
+              <PokemonCard {...pokemon} />
             </div>
           ))}
       </div>

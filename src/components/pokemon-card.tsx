@@ -40,12 +40,12 @@ export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
           {/* Card header */}
           <div className="pt-4 pb-4 px-6 relative">
             <div className="flex justify-between items-center ml-6">
-              <h3 className="text-2xl font-bold text-primary-foreground uppercase tracking-wide">{name}</h3>
+              <h3 className="text-2xl font-bold text-white uppercase tracking-wide">{name}</h3>
               <Badge className="bg-white/20 text-white rounded-full py-1 px-3 text-base font-bold">
                 # {id.toString().padStart(3, "0")}
               </Badge>
             </div>
-            <span className="text-sm text-primary-foreground/80 uppercase tracking-wider ml-6">Pokémon</span>
+            <span className="text-sm text-white/80 uppercase tracking-wider ml-6">Pokémon</span>
           </div>
 
           {/* Card image area */}

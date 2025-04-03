@@ -65,7 +65,9 @@ export function useFetchPokemons(limit: number, offset: number, autoFetch: boole
 
   useEffect(() => {
     if(autoFetch){
-      executeGetRequest();
+      setTimeout(()=>{
+        executeGetRequest();
+      }, 500)
     }
   }, [autoFetch]); // run when url is changed
 

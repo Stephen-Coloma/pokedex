@@ -9,6 +9,7 @@ import { Pokemon } from "@/types/Pokemon";
 import { useEffect, useState } from "react";
 import { Banner } from "@/components/banner";
 import { SearchPokemon } from "../components/search-pokemon";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function Home() {
   const limit = 10;
@@ -60,14 +61,23 @@ export default function Home() {
 
       <SearchPokemon onSearchPokemon={handleSearchPokemon}/>
 
-      <div className="w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
-        {loading && <h1>loading</h1>}
-
-        {visibleCards &&
-          visibleCards.map((pokemon, index) => (
-            <PokemonCard key={index} {...pokemon} />
-          ))}
-      </div>
+      {loading ? 
+        <div className="flex justify-center py-10">
+         <DotLottieReact
+            src="https://lottie.host/6b970764-42a6-4f36-9983-2792f3df8edc/bIa223kckN.lottie"
+            loop
+            autoplay
+            className="w-96"
+          />
+        </div>
+        :
+        <div className="w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
+          {visibleCards &&
+            visibleCards.map((pokemon, index) => (
+              <PokemonCard key={index} {...pokemon} />
+            ))}
+        </div>
+      }
 
       <div className="h-[60px] md:h-[60px] lg:h-[40px]">
         <div className="fixed bottom-0 left-0 right-0 w-full p-4 z-10 flex justify-center w-full">

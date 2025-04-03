@@ -24,7 +24,7 @@ export function SearchPokemon({ onSearchPokemon }: PokemonSearchComponentProps) 
   const debouncedResults = useMemo(
     () =>
       debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-        const term = e.target.value;
+        const term = e.target.value.toLowerCase();
 
         //empty pokemon Data - not yet fetched
         if(pokemonData.length === 0){
@@ -63,7 +63,7 @@ export function SearchPokemon({ onSearchPokemon }: PokemonSearchComponentProps) 
 
   return (
     <div className="flex justify-end w-full">
-      <div className="flex items-center max-w-sm space-x-2 bg-muted rounded-lg px-2 py-2">
+      <div className="flex items-center max-w-md space-x-2 bg-muted rounded-lg px-2 py-2">
         <SearchIcon className="h-4 w-4" />
         <Input
           type="search"

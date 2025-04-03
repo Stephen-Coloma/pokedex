@@ -129,7 +129,7 @@ export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
           {/* Card footer */}
           <div className="flex px-6 pb-4 flex justify-center items-center gap-2">
               {types.map((type, index) => (
-                <PokemonTypeIcon key={index} type={type}></PokemonTypeIcon>
+                <PokemonTypeIcon key={index} type={type} pageCaller="homepage"></PokemonTypeIcon>
               ))}
           </div>
 

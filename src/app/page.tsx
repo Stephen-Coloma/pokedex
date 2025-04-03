@@ -67,7 +67,7 @@ export default function Home() {
       <Separator></Separator>
       <Banner></Banner>
 
-      {/* <SearchPokemon onSearchPokemon={handleSearchPokemon}/> */}
+      <SearchPokemon onSearchPokemon={handleSearchPokemon}/>
 
       {loading ? 
         <div className="flex justify-center py-10">

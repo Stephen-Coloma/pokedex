@@ -49,7 +49,7 @@ export function useFetchPokemonProfile(id: number): ApiResponse<PokemonProfile> 
       const descriptions = await fetchPokemonDescription(id);
       const latestCry = cries.latest;
       const formattedStats = processStats(stats);
-      const weaknesses = getWeaknesses(types);
+      const weaknesses = getWeaknesses(formattedTypes);
       
       const pokemonProfile: PokemonProfile = {
         id: id,

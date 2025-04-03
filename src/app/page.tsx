@@ -8,8 +8,9 @@ import { useFetchPokemons } from "@/hooks/useFetchPokemons";
 import { Pokemon } from "@/types/Pokemon";
 import { useEffect, useState } from "react";
 import { Banner } from "@/components/banner";
-import { SearchPokemon } from "../components/search-pokemon";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const limit = 10;
@@ -17,6 +18,7 @@ export default function Home() {
   const { status, data, loading } = useFetchPokemons(limit,offset);
   const [visibleCards, setVisibleCards] = useState<Pokemon[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const router = useRouter()
 
   // first 10 cards
   useEffect(() => {
@@ -53,13 +55,18 @@ export default function Home() {
     setVisibleCards(searchResults);
   };
 
+  const handleViewProfile = (id: number) => {
+    router.push(`/pokemon/${id}`)
+  };
+
   return (
     <div className="container mx-auto w-full px-5">
+      <Button onClick={()=> handleViewProfile(35)}>Click me</Button>
       <Header></Header>
       <Separator></Separator>
       <Banner></Banner>
 
-      <SearchPokemon onSearchPokemon={handleSearchPokemon}/>
+      {/* <SearchPokemon onSearchPokemon={handleSearchPokemon}/> */}
 
       {loading ? 
         <div className="flex justify-center py-10">

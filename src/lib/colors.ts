@@ -60,7 +60,5 @@ export function getTypeGradient(types: PokemonType[]){
 
 
 export function getTypeColor(type: PokemonType): string{
-  console.log(typeColors[type]);
-  
   return typeColors[type];
 }

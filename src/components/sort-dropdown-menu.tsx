@@ -9,7 +9,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowDown01, ArrowDown10, ArrowDownAZ, ArrowDownZA } from "lucide-react";
@@ -28,7 +27,7 @@ export function SortDropDownMenu({onSortChange}: SortDropDownMenuProps) {
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-1"
+          className="flex items-center gap-1 rounded-full"
         >
           {(sortOption === 'name-asc' && <ArrowDownAZ></ArrowDownAZ>)}
           {(sortOption === 'name-desc' && <ArrowDownZA></ArrowDownZA>)}

@@ -5,17 +5,48 @@ import { getTypeColor } from "@/lib/colors";
 import { PokemonTypeIcon } from "./pokemon-type-icon";
 import { Badge } from "./ui/badge";
 import { Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Card } from "./ui/card";
+import { MouseEvent } from "react";
 
 export type PokemonCardProps = Pokemon;
 
 export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
-  const [isHovering, setIsHovering] = useState<boolean>(false)
+  const [isHovering, setIsHovering] = useState<boolean>(false);
+  const cardRef = useRef<HTMLDivElement | null>(null)
+
+  // Handle mouse move for 3D effect
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!isHovering || !cardRef.current) return;
+
+    const card = cardRef.current
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+
+    const rotateX = (y - centerY) / 10
+    const rotateY = (centerX - x) / 10
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovering(false)
+    if (cardRef.current) {
+      cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)"
+    }
+  }
 
   return (
     // main container
-    <Card className={`border-2 p-0 relative w-full h-[fit] max-w-xs mx-auto rounded-xl bg-muted`}>
+    <Card className={`border-2 p-0 relative w-full h-[fit] max-w-xs mx-auto rounded-xl bg-muted`}
+      ref={cardRef}
+      onMouseMove={handleMouseMove}  // Add mouse move event listener
+      onMouseLeave={handleMouseLeave} // Handle mouse leave
+    >
 
       {/* Custom shaped card  */}
       <div
@@ -64,11 +95,11 @@ export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
               />
 
               {/* Pokemon image with pop-up effect */}
-              <div className="relative z-10 select-none">
+              <div className="relative z-10">
                 <img
                   src={photo}
                   alt={name}
-                  className={`object-contain mx-auto max-h-full max-w-full transition-all duration-300 select-none ${isHovering ? "scale-110 drop-shadow-2xl" : "scale-100"}`}
+                  className={`object-contain mx-auto max-h-full max-w-full transition-all duration-300 ${isHovering ? "scale-110 drop-shadow-2xl" : "scale-100"}`}
                 />
 
                 {/* Shiny sparkle effects that appear on hover */}

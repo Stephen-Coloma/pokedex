@@ -1,12 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  ArrowUpDown,
   Volume2,
   VolumeX,
-  Moon,
-  Sun,
   Loader2,
 } from "lucide-react";
 
@@ -16,29 +13,48 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { SortDropDownMenu } from "./sort-dropdown-menu";
 import { ModeToggle } from "./mode-toggle";
-import { useTheme } from "next-themes";
+import { Pokemon } from "@/types/Pokemon";
+import { useFetchPokemons } from "@/hooks/useFetchPokemons";
+import { usePokemonStore } from "@/store/pokemonStore";
 
 type SettingsIslandProps = {
   onSortChange: (sortOption: string) => void;
+  onLoadMorecards: (loadedCards: Pokemon[]) => void;
+  isSearching: boolean,
+  limit: number,
+  offset: number
 }
 
-export default function SettingsIsland({onSortChange}: SettingsIslandProps) {
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const isDark = theme === "dark";
+export default function SettingsIsland({onSortChange, onLoadMorecards, isSearching, limit, offset}: SettingsIslandProps) {
+  const { status, data, loading, executeGetRequest} = useFetchPokemons(limit, offset, false);
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const searchResults = usePokemonStore((state)=> state.searchResults);
+  const [localLoading, setLocalLoading] = useState<boolean>(false); // loading for viewing searched cards
+
 
   const handleLoadMore = () => {
-    setIsLoading(true);
-    // Simulate loading
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
+    if(isSearching){ //if on searching state, return from the filtered global pokemon store.   
+      setLocalLoading(true);
+
+      setTimeout(()=>{
+        onLoadMorecards(searchResults.slice(offset, offset+limit))
+        setLocalLoading(false);
+      }, 500)
+
+    }else{
+      executeGetRequest!();
+    }
   };
 
+  useEffect(() => {
+    if (status === 200 && data) {
+      onLoadMorecards(data as Pokemon[]); // Append new cards
+    }
+  }, [status, data]); // Runs when the data or status changes
+
   return (
-    <div className="flex justify-center items-center w-fit">
-      <Card className="w-full max-w-4xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 p-2">
+    <div className="flex justify-center items-center w-fit rounded-full">
+      <Card className="w-full max-w-4xl shadow-lg hover:shadow-xl transition-all duration-300 p-2 rounded-full bg-muted">
         <div className="flex flex-wrap items-center justify-between gap-3 md:flex-nowrap">
 
           <SortDropDownMenu onSortChange={onSortChange}></SortDropDownMenu>
@@ -72,10 +88,10 @@ export default function SettingsIsland({onSortChange}: SettingsIslandProps) {
           <Button
             size="sm"
             onClick={handleLoadMore}
-            disabled={isLoading}
-            className="ml-auto"
+            disabled={loading}
+            className="ml-auto rounded-full text-xs"
           >
-            {isLoading ? (
+            {(loading || localLoading) ? (
               <Loader2 className="h-4 w-4 animate-spin mr-1" />
             ) : null}
             See More

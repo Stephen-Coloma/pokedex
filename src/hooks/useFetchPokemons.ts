@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { ApiResponse } from "@/types/ApiResponse";
 import getPhotoURL from "@/lib/getPhotoURL";
 
-const axios = setupCache(Axios.create());
+export const axios = setupCache(Axios.create());
 
 /**
  * A type that is matched to the request result of the endpoint:
@@ -33,16 +33,16 @@ export type NamedAPIResource = {
  * @returns an API response type of object that contains pokemon array. Useful for 
  * managing errors and loading states in UI.
  */
-export function useFetchAllPokemons(limit: number, offset: number): ApiResponse<Pokemon[]> {
+export function useFetchPokemons(limit: number, offset: number, autoFetch: boolean = true): ApiResponse<Pokemon[]> {
   const url = `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`
   const [status, setStatus] = useState<number>(0);
   const [statusText, setStatusText] = useState<string>("");
   const [data, setData] = useState<Pokemon[] | null>(null);
   const [error, setError] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // This method is used for firing the get request
-  const executeGetRequest = async (url: string) => {
+  const executeGetRequest = async () => {
     setLoading(true);
 
     try {
@@ -64,17 +64,19 @@ export function useFetchAllPokemons(limit: number, offset: number): ApiResponse<
   };
 
   useEffect(() => {
-    executeGetRequest(url);
-  }, [url]); // run when url is changed
+    if(autoFetch){
+      executeGetRequest();
+    }
+  }, [autoFetch]); // run when url is changed
 
-  return { status, statusText, data, error, loading };
+  return { status, statusText, data, error, loading, executeGetRequest};
 }
 
 /**
  * A helper function that fetches individual pokemon details such as id, name, photos and types.
  * @param initialResults the initial results of the api call to fetch all pokemon
  */
-async function fetchPokemonMainDetails(initialResults: NamedAPIResource[]): Promise<Pokemon[]> {
+export async function fetchPokemonMainDetails(initialResults: NamedAPIResource[]): Promise<Pokemon[]> {
   try {
     const pokemonPromises = initialResults.map(async (item) => {
       const response = await axios.get(item.url);

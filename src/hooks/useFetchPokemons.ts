@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { ApiResponse } from "@/types/ApiResponse";
 import getPhotoURL from "@/lib/getPhotoURL";
 
-const axios = setupCache(Axios.create());
+export const axios = setupCache(Axios.create());
 
 /**
  * A type that is matched to the request result of the endpoint:

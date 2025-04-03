@@ -24,11 +24,11 @@ type SettingsIslandProps = {
 }
 
 export default function SettingsIsland({onSortChange, onLoadMorecards, limit, offset}: SettingsIslandProps) {
-  const { status, statusText, data, error, loading, executeGetRequest} = useFetchPokemons(limit, offset, false);
+  const { status, data, loading, executeGetRequest} = useFetchPokemons(limit, offset, false);
   const [soundEnabled, setSoundEnabled] = useState(true);
 
   const handleLoadMore = () => {
-    executeGetRequest();
+    executeGetRequest!();
   };
 
   useEffect(() => {

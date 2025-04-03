@@ -8,14 +8,15 @@ import { useFetchPokemons } from "@/hooks/useFetchPokemons";
 import { Pokemon } from "@/types/Pokemon";
 import { useEffect, useState } from "react";
 import { Banner } from "@/components/banner";
-import { PokemonSearchComponent } from "../components/pokemon-search-component";
+import { SearchPokemon } from "../components/search-pokemon";
 
 export default function Home() {
   const limit = 10;
   const [offset, setOffset] = useState<number>(0);
-  const { status, statusText, data, error, loading } = useFetchPokemons(limit,offset);
+  const { status, data, loading } = useFetchPokemons(limit,offset);
   const [visibleCards, setVisibleCards] = useState<Pokemon[]>([]);
 
+  // first 10 cards
   useEffect(() => {
     if (status === 200) {
       setVisibleCards(data as Pokemon[]);
@@ -54,7 +55,7 @@ export default function Home() {
       <Separator></Separator>
       <Banner></Banner>
 
-      <PokemonSearchComponent onSearchPokemon={handleSearchPokemon} />
+      <SearchPokemon onSearchPokemon={handleSearchPokemon} />
 
       <div className="w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
         {loading && <h1>loading</h1>}

@@ -15,20 +15,35 @@ import { SortDropDownMenu } from "./sort-dropdown-menu";
 import { ModeToggle } from "./mode-toggle";
 import { Pokemon } from "@/types/Pokemon";
 import { useFetchPokemons } from "@/hooks/useFetchPokemons";
+import { usePokemonStore } from "@/store/pokemonStore";
 
 type SettingsIslandProps = {
   onSortChange: (sortOption: string) => void;
   onLoadMorecards: (loadedCards: Pokemon[]) => void;
+  isSearching: boolean,
   limit: number,
   offset: number
 }
 
-export default function SettingsIsland({onSortChange, onLoadMorecards, limit, offset}: SettingsIslandProps) {
+export default function SettingsIsland({onSortChange, onLoadMorecards, isSearching, limit, offset}: SettingsIslandProps) {
   const { status, data, loading, executeGetRequest} = useFetchPokemons(limit, offset, false);
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const searchResults = usePokemonStore((state)=> state.searchResults);
+  const [localLoading, setLocalLoading] = useState<boolean>(false); // loading for viewing searched cards
+
 
   const handleLoadMore = () => {
-    executeGetRequest!();
+    if(isSearching){ //if on searching state, return from the filtered global pokemon store.   
+      setLocalLoading(true);
+
+      setTimeout(()=>{
+        onLoadMorecards(searchResults.slice(offset, offset+limit))
+        setLocalLoading(false);
+      }, 500)
+
+    }else{
+      executeGetRequest!();
+    }
   };
 
   useEffect(() => {
@@ -76,7 +91,7 @@ export default function SettingsIsland({onSortChange, onLoadMorecards, limit, of
             disabled={loading}
             className="ml-auto rounded-full text-xs"
           >
-            {loading ? (
+            {(loading || localLoading) ? (
               <Loader2 className="h-4 w-4 animate-spin mr-1" />
             ) : null}
             See More

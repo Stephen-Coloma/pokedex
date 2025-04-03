@@ -11,6 +11,8 @@ import {axios} from '@/hooks/useFetchPokemons'
 interface PokemonState {
   pokemonData: Pokemon[];
   fetchPokemon: () => Promise<void>;
+  searchResults: Pokemon[];
+  setSearchResults: (searchResults: Pokemon[]) => void
 }
 
 /**
@@ -34,9 +36,13 @@ export const usePokemonStore = create<PokemonState>((set) => ({
       );
 
       set({ pokemonData: pokemonArray});
+      console.log('fetched');
+      
     } catch (error: unknown) {
       set({pokemonData: []})
       console.error("Error fetching the data:", error);
     }
   },
+  searchResults: [],
+  setSearchResults: (searchResults: Pokemon[]) => set({searchResults: searchResults})
 }));

@@ -15,6 +15,7 @@ export default function Home() {
   const [offset, setOffset] = useState<number>(0);
   const { status, data, loading } = useFetchPokemons(limit,offset);
   const [visibleCards, setVisibleCards] = useState<Pokemon[]>([]);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
 
   // first 10 cards
   useEffect(() => {
@@ -45,7 +46,9 @@ export default function Home() {
     setOffset((prev) => prev + limit); //10 + 10;
   };
 
-  const handleSearchPokemon = (searchResults: Pokemon[]) => {
+  const handleSearchPokemon = (searchResults: Pokemon[], isSearching: boolean) => {
+    setOffset(0); //always return offset to zero when searching
+    setIsSearching(isSearching);
     setVisibleCards(searchResults);
   };
 
@@ -55,7 +58,7 @@ export default function Home() {
       <Separator></Separator>
       <Banner></Banner>
 
-      <SearchPokemon onSearchPokemon={handleSearchPokemon} />
+      <SearchPokemon onSearchPokemon={handleSearchPokemon}/>
 
       <div className="w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
         {loading && <h1>loading</h1>}
@@ -71,6 +74,7 @@ export default function Home() {
           <SettingsIsland
             onSortChange={handleSortChange}
             onLoadMorecards={handleLoadMoreCards}
+            isSearching={isSearching}
             limit={limit}
             offset={offset + limit}
           />

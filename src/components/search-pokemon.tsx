@@ -6,11 +6,14 @@ import { Pokemon } from "@/types/Pokemon";
 import { usePokemonStore } from "@/store/pokemonStore";
 
 type PokemonSearchComponentProps = {
-  onSearchPokemon: (searchPokemons: Pokemon[]) => void;
+  onSearchPokemon: (searchPokemons: Pokemon[], isSearching: boolean) => void;
 };
 
 export function SearchPokemon({ onSearchPokemon }: PokemonSearchComponentProps) {
-  const { pokemonData, fetchPokemon } = usePokemonStore();
+  // const { pokemonData, fetchPokemon, searchResults, setSearchResults } = usePokemonStore();
+  const pokemonData = usePokemonStore((state) => state.pokemonData);
+  const fetchPokemon = usePokemonStore((state) => state.fetchPokemon);
+  const setSearchResults = usePokemonStore((state) => state.setSearchResults);
 
     // trigger fetching the all pokemon when search bar mounts
     useEffect(() => {
@@ -25,24 +28,28 @@ export function SearchPokemon({ onSearchPokemon }: PokemonSearchComponentProps) 
 
         //empty pokemon Data - not yet fetched
         if(pokemonData.length === 0){
-          return onSearchPokemon([]);
+          return onSearchPokemon([], true);
         }
 
         if (!term && pokemonData) {
           const resetData = pokemonData.slice(0, 10);
-          return onSearchPokemon(resetData);
+          onSearchPokemon(resetData, false);
+          return;
         }
 
-        let searchResults: Pokemon[] = [];
+        //store the search results on the global store so that island settings will have access to it.
+        let tempSearchResults: Pokemon[] = [];
         if (/[0123456789]/.test(term)) { 
           // id searching
-          searchResults = pokemonData.filter((pokemon) => pokemon.id.toString().includes(term))
+          tempSearchResults = pokemonData.filter((pokemon) => pokemon.id.toString().includes(term));
+          setSearchResults(tempSearchResults);
         } else { 
           // name searching
-          searchResults = pokemonData.filter((pokemon) => pokemon.name.includes(term))
+          tempSearchResults = pokemonData.filter((pokemon) => pokemon.name.includes(term));
+          setSearchResults(tempSearchResults);
         }
 
-        return onSearchPokemon(searchResults);
+        onSearchPokemon(tempSearchResults.slice(0, 10), true);
       }, 300), // 300ms debounce delay
 
     [pokemonData, onSearchPokemon] // Re-create debounce when these dependencies change

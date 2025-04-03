@@ -1,31 +1,24 @@
 import {
   PokemonAbility,
   PokemonProfile,
-  PokemonMove,
   PokemonStat,
   EvolutionChain,
 } from "@/types/PokemonProfile";
-import Axios, { AxiosResponse } from "axios";
-import { setupCache } from "axios-cache-interceptor";
+import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { ApiResponse } from "@/types/ApiResponse";
-import { Pokemon } from "@/types/Pokemon";
 import getWeaknesses from "@/lib/getWeaknesses";
 import getPhotoURL from "@/lib/getPhotoURL";
-
-const axios = setupCache(Axios.create());
+import { PokemonType } from "@/types/Pokemon";
+import {axios} from "@/hooks/useFetchPokemons";
 
 /**
  * A custom hook that utilized for fetching compelete pokemon details.
+ * 
  * @returns an API response type of object that contains pokemon details.
  * Useful for managing errors and loading states in UI.
  */
-export function useFetchPokemonProfile({
-  id,
-  name,
-  photo,
-  types,
-}: Pokemon): ApiResponse<PokemonProfile> {
+export function useFetchPokemonProfile(id: number): ApiResponse<PokemonProfile> {
   const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
   const [status, setStatus] = useState<number>(0);
   const [statusText, setStatusText] = useState<string>("");
@@ -38,42 +31,44 @@ export function useFetchPokemonProfile({
     setLoading(true);
     try {
       const response: AxiosResponse = await axios.get(url);
-      setStatus(response.status);
-      setStatusText(response.statusText);
-
+      
       const {
+        name,
         height,
         weight,
         base_experience,
         abilities,
-        moves,
         cries,
         stats,
+        types,
       } = response.data;
-
+      
       const formattedAbilities = await fetchAbilities(abilities);
-      const formattedMoves = await fetchMoves(moves);
       const evolutionChainData = await fetchEvolutionChain(id);
+      const formattedTypes = await formatTypes(types);
+      const descriptions = await fetchPokemonDescription(id);
       const latestCry = cries.latest;
       const formattedStats = processStats(stats);
       const weaknesses = getWeaknesses(types);
-
+      
       const pokemonProfile: PokemonProfile = {
         id: id,
         name: name,
-        photo: photo,
-        types: types,
+        photo: getPhotoURL(id),
+        types: formattedTypes,
         height: height,
         weight: weight,
+        description: descriptions,
         baseExperience: base_experience,
         abilities: formattedAbilities,
-        moves: formattedMoves,
         cry: latestCry,
         stats: formattedStats,
         weaknesses: weaknesses,
         evolutionChain: evolutionChainData,
       };
-
+      
+      setStatus(response.status);
+      setStatusText(response.statusText);
       setData(pokemonProfile);
     } catch (error: unknown) {
       setError(error);
@@ -81,11 +76,11 @@ export function useFetchPokemonProfile({
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     executeGetRequest(url);
   }, [url]); // run when url is changed
-
+  
   return { status, statusText, data, error, loading };
 }
 
@@ -107,10 +102,12 @@ async function fetchAbilities(abilities: any): Promise<PokemonAbility[]> {
         };
       }): Promise<PokemonAbility> => {
         const response = await axios.get(ability.url);
+
         //ability effect in english language
-        const effect =
-          response.data.effect_entries[response.data.effect_entries.length - 1]
-            .effect;
+        const effect = response.data.effect_entries.filter(
+          (entry: any) => entry.language.name === "en"
+        ).map((entry: any) => entry.effect.replace(/[\f\n\r]+/g, " "))[0]; // Remove line breaks
+
         return {
           name: ability.name,
           effect: effect,
@@ -123,46 +120,6 @@ async function fetchAbilities(abilities: any): Promise<PokemonAbility[]> {
     );
 
     return pokemonAbilities;
-  } catch (error: unknown) {
-    throw error;
-  }
-}
-
-/**
- * This function fetches the first four moves of the pokemon.
- *
- * @param moves moves that are from pokemon endpoint call.
- * @returns a formatted moves for easier display on the UI
- */
-async function fetchMoves(moves: any): Promise<PokemonMove[]> {
-  try {
-    const movesPromises = moves.slice(0, 4).map(
-      async ({
-        move,
-      }: {
-        move: {
-          name: string;
-          url: string;
-        };
-      }): Promise<PokemonMove> => {
-        const response = await axios.get(move.url);
-        const { name, power, accuracy, effect_entries, type } = response.data;
-        //move short effect in english language
-        const shortEffect =
-          effect_entries[effect_entries.length - 1].short_effect;
-        return {
-          name: name,
-          power: power || 0,
-          accuracy: accuracy || 0,
-          effect: shortEffect,
-          type: type.name,
-        };
-      }
-    );
-
-    const pokemonMoves: PokemonMove[] = await Promise.all(movesPromises);
-
-    return pokemonMoves;
   } catch (error: unknown) {
     throw error;
   }
@@ -202,6 +159,43 @@ async function fetchEvolutionChain(id: number): Promise<EvolutionChain> {
     const evolutionChain = buildEvolutionChain(chain);
     return evolutionChain;
   } catch (error: unknown) {
+    throw error;
+  }
+}
+
+/**
+ * This function parses the types that comes from the API call to 
+ * PokemonType[].
+ * 
+ * @param types fetch that results from the call to the pokemon endpoint
+ * @returns 
+ */
+function formatTypes(types: any): PokemonType[] {
+  const formattedTypes: PokemonType[] = types.map((t: { type: { name: string } }) => t.type.name)
+  return formattedTypes;
+}
+
+/**
+ * This function fetches the description for the pokemon.
+ * 
+ * @param id of the pokemon
+ * @returns string aarray
+ */
+async function fetchPokemonDescription(id: number) {
+  try{
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+    const data = await response.data;
+
+    // english desc
+    const descriptions: string[] = data.flavor_text_entries
+      .filter((entry: any) => entry.language.name === "en")
+      .map((entry: any) => entry.flavor_text.replace(/[\f\n\r]+/g, " ")); // Remove line breaks
+  
+    // set to remove dupes
+    const uniqueDescriptions = [...new Set(descriptions)];
+  
+    return uniqueDescriptions;
+  }catch(error: unknown){
     throw error;
   }
 }

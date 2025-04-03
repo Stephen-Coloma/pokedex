@@ -63,7 +63,7 @@ export default function Home() {
 
       {loading ? 
         <div className="flex justify-center py-10">
-         <DotLottieReact
+        <DotLottieReact
             src="https://lottie.host/6b970764-42a6-4f36-9983-2792f3df8edc/bIa223kckN.lottie"
             loop
             autoplay

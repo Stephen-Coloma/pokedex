@@ -12,9 +12,9 @@ import { Pokemon, PokemonType } from "./Pokemon";
 export interface PokemonProfile extends Pokemon {
   height: number;
   weight: number;
+  description: string[];
   baseExperience: number;
   abilities: PokemonAbility[],
-  moves: PokemonMove[],
   cry: string,
   stats: PokemonStat,
   weaknesses: PokemonType[],
@@ -43,18 +43,6 @@ export type PokemonAbility = {
  * Represent the types of the move. 
  */
 export type MoveType = PokemonType;
-
-/**
- * Represents a move the pokemon has. Only the first 3 moves of the pokemon is included.
- * effect - decription of the move (short description).
- */
-export type PokemonMove = {
-  name: string;
-  power: number;
-  accuracy: number;
-  effect: string;
-  type: MoveType[];
-};
 
 /**
  * Represents the Pokémon's base stats.

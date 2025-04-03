@@ -1,64 +1,45 @@
-import { useMemo, useEffect, useRef } from "react";
+import { useMemo, useEffect } from "react";
 import debounce from "lodash.debounce";
 import { SearchIcon } from "lucide-react";
 import { Input } from "./ui/input";
 import { Pokemon } from "@/types/Pokemon";
-import {AxiosResponse } from "axios";
-import { fetchPokemonMainDetails, NamedAPIResource } from "@/hooks/useFetchPokemons";
-import { axios } from '@/hooks/useFetchPokemons';
+import { usePokemonStore } from "@/store/pokemonStore";
 
 type PokemonSearchComponentProps = {
   onSearchPokemon: (searchPokemons: Pokemon[]) => void;
 };
 
 export function SearchPokemon({ onSearchPokemon }: PokemonSearchComponentProps) {
-  const pokemonData = useRef<Pokemon[]>([]);
+  const { pokemonData, fetchPokemon } = usePokemonStore();
 
-  // fetch all the data in async
-  useEffect(()=>{
-    async function fetchData(){
-      try{
-        await new Promise((resolve) => setTimeout(resolve, 600))
-        const url = "https://pokeapi.co/api/v2/pokemon/?limit=1025&offset=0";
-        const response: AxiosResponse = await axios.get(url);
-        
-        //fetch every pokemon's main details
-        const pokemonArray = await fetchPokemonMainDetails(
-          response.data.results as NamedAPIResource[]
-        );
-        
-        return pokemonData.current = pokemonArray;        
-      }catch(error: unknown){
-        console.log('error fetching the data', error);
-      }
-    }
-    
-    fetchData();
-  }, []) // run only once
+    // trigger fetching the all pokemon when search bar mounts
+    useEffect(() => {
+      fetchPokemon();
+    }, [fetchPokemon]);
 
-  // Use useMemo to debounce the search
+  // Use useMemo to debounce the search to prevent multiple call request per user type.
   const debouncedResults = useMemo(
     () =>
       debounce((e: React.ChangeEvent<HTMLInputElement>) => {
         const term = e.target.value;
 
         //empty pokemon Data - not yet fetched
-        if(pokemonData.current.length === 0){
+        if(pokemonData.length === 0){
           return onSearchPokemon([]);
         }
 
         if (!term && pokemonData) {
-          const resetData = pokemonData.current.slice(0, 10);
+          const resetData = pokemonData.slice(0, 10);
           return onSearchPokemon(resetData);
         }
 
         let searchResults: Pokemon[] = [];
         if (/[0123456789]/.test(term)) { 
           // id searching
-          searchResults = pokemonData.current.filter((pokemon) => pokemon.id.toString().includes(term))
+          searchResults = pokemonData.filter((pokemon) => pokemon.id.toString().includes(term))
         } else { 
           // name searching
-          searchResults = pokemonData.current.filter((pokemon) => pokemon.name.includes(term))
+          searchResults = pokemonData.filter((pokemon) => pokemon.name.includes(term))
         }
 
         return onSearchPokemon(searchResults);

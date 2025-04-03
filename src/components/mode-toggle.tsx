@@ -18,7 +18,7 @@ export function ModeToggle() {
   const isDark = theme === "dark";
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 ">
       <Sun
         className={`h-4 w-4 transition-all ${
           isDark ? "-rotate-90 scale-0" : "rotate-0 scale-100"

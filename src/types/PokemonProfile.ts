@@ -40,11 +40,6 @@ export type PokemonAbility = {
 };
 
 /**
- * Represent the types of the move. 
- */
-export type MoveType = PokemonType;
-
-/**
  * Represents the Pokémon's base stats.
  */
 export type PokemonStat = {

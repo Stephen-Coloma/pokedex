@@ -12,7 +12,7 @@ import { Pokemon, PokemonType } from "./Pokemon";
 export interface PokemonProfile extends Pokemon {
   height: number;
   weight: number;
-  description: string[];
+  descriptions: string[];
   baseExperience: number;
   abilities: PokemonAbility[],
   cry: string,

@@ -1,4 +1,4 @@
-import { PokemonProfile } from "@/components/pokemon-profile";
+import { PokemonProfileComponent } from "@/components/pokemon-profile";
 
 type PokemonDetailsPageProps = {
   id: number
@@ -6,8 +6,9 @@ type PokemonDetailsPageProps = {
 
 export default async function Pokemon({params}: {params: Promise<PokemonDetailsPageProps>}) {
   const{ id } = await params;
-
   return(
-    <PokemonProfile id={id}/>
+    <div className="container mx-auto px-4 py-8 max-w-5xl">
+      <PokemonProfileComponent id={id}/>
+    </div>
   );
 }

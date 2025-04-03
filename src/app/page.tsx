@@ -11,6 +11,7 @@ import { Banner } from "@/components/banner";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { SearchPokemon } from "@/components/search-pokemon";
 
 export default function Home() {
   const limit = 10;
@@ -61,7 +62,7 @@ export default function Home() {
 
   return (
     <div className="container mx-auto w-full px-5">
-      <Button onClick={()=> handleViewProfile(35)}>Click me</Button>
+      <Button onClick={()=> handleViewProfile(133)}>Click me</Button>
       <Header></Header>
       <Separator></Separator>
       <Banner></Banner>

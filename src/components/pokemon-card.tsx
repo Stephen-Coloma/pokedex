@@ -42,7 +42,7 @@ export function PokemonCard({ id, name, photo, types }: PokemonCardProps) {
 
   return (
     // main container
-    <Card className={`border-2 p-0 relative w-full h-[fit] max-w-xs mx-auto rounded-xl bg-muted`}
+    <Card className={`border-2 p-0 relative w-full h-[fit] max-w-xs mx-auto rounded-xl bg-zinc-900`}
       ref={cardRef}
       onMouseMove={handleMouseMove}  // Add mouse move event listener
       onMouseLeave={handleMouseLeave} // Handle mouse leave

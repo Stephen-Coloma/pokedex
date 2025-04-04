@@ -9,16 +9,22 @@ import { Pokemon } from "@/types/Pokemon";
 import { useEffect, useState } from "react";
 import { Banner } from "@/components/banner";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { SearchPokemon } from "@/components/search-pokemon";
 
 export default function Home() {
   const limit = 10;
   const [offset, setOffset] = useState<number>(0);
-  const { status, data, loading } = useFetchPokemons(limit,offset);
+  const { status, data, loading, executeGetRequest } = useFetchPokemons(limit,offset);
   const [visibleCards, setVisibleCards] = useState<Pokemon[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
-  const router = useRouter()
+  const router = useRouter();
+  
+  // fetches data when the user comes from the profile page. it is cached so this is instant.
+  // the problem is, whenever the user comes back from profile, homepage is empty.
+  useEffect(()=>{
+    executeGetRequest!();
+  }, [])
 
   // first 10 cards
   useEffect(() => {
@@ -68,34 +74,34 @@ export default function Home() {
 
       {/* <SearchPokemon onSearchPokemon={handleSearchPokemon}/> */}
 
+      <Separator className="mt-10"></Separator>
+
       {loading ? 
-        <div className="flex justify-center py-10">
+        <div className="flex justify-center py-10 flex-grow">
         <DotLottieReact
             src="https://lottie.host/6b970764-42a6-4f36-9983-2792f3df8edc/bIa223kckN.lottie"
             loop
             autoplay
-            className="w-96"
+            className="w-130"
           />
         </div>
         :
-        <div className="w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
+        <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
           {visibleCards &&
             visibleCards.map((pokemon, index) => (
-              <PokemonCard key={index} {...pokemon} />
+              <PokemonCard key={index} {...pokemon} onViewProfile={handleViewProfile}/>
             ))}
         </div>
       }
 
-      <div className="h-[60px] md:h-[60px] lg:h-[40px]">
-        <div className="fixed bottom-0 left-0 right-0 w-full p-4 z-10 flex justify-center w-full">
-          <SettingsIsland
-            onSortChange={handleSortChange}
-            onLoadMorecards={handleLoadMoreCards}
-            isSearching={isSearching}
-            limit={limit}
-            offset={offset + limit}
-          />
-        </div>
+      <div className="py-10 border-t-2">
+        <SettingsIsland
+          onSortChange={handleSortChange}
+          onLoadMorecards={handleLoadMoreCards}
+          isSearching={isSearching}
+          limit={limit}
+          offset={offset + limit}
+        />
       </div>
     </div>
   );

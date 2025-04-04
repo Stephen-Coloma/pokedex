@@ -10,7 +10,6 @@ type PokemonSearchComponentProps = {
 };
 
 export function SearchPokemon({ onSearchPokemon }: PokemonSearchComponentProps) {
-  // const { pokemonData, fetchPokemon, searchResults, setSearchResults } = usePokemonStore();
   const pokemonData = usePokemonStore((state) => state.pokemonData);
   const fetchPokemon = usePokemonStore((state) => state.fetchPokemon);
   const setSearchResults = usePokemonStore((state) => state.setSearchResults);

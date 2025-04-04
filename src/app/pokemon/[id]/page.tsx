@@ -1,4 +1,6 @@
-import { PokemonProfile } from "@/components/pokemon-profile";
+import { Header } from "@/components/header";
+import { PokemonProfileComponent } from "@/components/pokemon-profile-component";
+import { Separator } from "@/components/ui/separator";
 
 type PokemonDetailsPageProps = {
   id: number
@@ -6,8 +8,13 @@ type PokemonDetailsPageProps = {
 
 export default async function Pokemon({params}: {params: Promise<PokemonDetailsPageProps>}) {
   const{ id } = await params;
-
   return(
-    <PokemonProfile id={id}/>
+    <div className="container mx-auto w-full px-5">
+      <Header></Header>
+      <Separator></Separator>
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
+        <PokemonProfileComponent id={id}/>
+      </div>
+    </div>
   );
 }

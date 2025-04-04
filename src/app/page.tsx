@@ -18,8 +18,8 @@ export default function Home() {
   const { status, data, loading, executeGetRequest } = useFetchPokemons(limit,offset);
   const [visibleCards, setVisibleCards] = useState<Pokemon[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
-  const router = useRouter()
-
+  const router = useRouter();
+  
   // fetches data when the user comes from the profile page. it is cached so this is instant.
   // the problem is, whenever the user comes back from profile, homepage is empty.
   useEffect(()=>{
@@ -67,11 +67,12 @@ export default function Home() {
 
   return (
     <div className="container mx-auto w-full px-5">
+      <Button onClick={()=> handleViewProfile(35)}>Click me</Button>
       <Header></Header>
       <Separator></Separator>
       <Banner></Banner>
 
-      <SearchPokemon onSearchPokemon={handleSearchPokemon}/>
+      {/* <SearchPokemon onSearchPokemon={handleSearchPokemon}/> */}
 
       <Separator className="mt-10"></Separator>
 

@@ -6,7 +6,7 @@ import { Pokemon } from "@/types/Pokemon";
 import { usePokemonStore } from "@/store/pokemonStore";
 
 type PokemonSearchComponentProps = {
-  onSearchPokemon: (searchPokemons: Pokemon[], isSearching: boolean) => void;
+  onSearchPokemon: (searchPokemons: Pokemon[], isSearching: boolean, isSearchDataLoading: boolean) => void;
 };
 
 export function SearchPokemon({ onSearchPokemon }: PokemonSearchComponentProps) {
@@ -27,12 +27,12 @@ export function SearchPokemon({ onSearchPokemon }: PokemonSearchComponentProps) 
 
         //empty pokemon Data - not yet fetched
         if(pokemonData.length === 0){
-          return onSearchPokemon([], true);
+          return onSearchPokemon([], true, true);
         }
 
         if (!term && pokemonData) {
           const resetData = pokemonData.slice(0, 10);
-          onSearchPokemon(resetData, false);
+          onSearchPokemon(resetData, false, false);
           return;
         }
 
@@ -47,22 +47,21 @@ export function SearchPokemon({ onSearchPokemon }: PokemonSearchComponentProps) 
           tempSearchResults = pokemonData.filter((pokemon) => pokemon.name.includes(term));
           setSearchResults(tempSearchResults);
         }
-
-        onSearchPokemon(tempSearchResults.slice(0, 10), true);
+        onSearchPokemon(tempSearchResults.slice(0, 10), true, false);
       }, 300), // 300ms debounce delay
 
-    [pokemonData, onSearchPokemon] // Re-create debounce when these dependencies change
+    [pokemonData, onSearchPokemon] 
   );
 
   useEffect(() => {
     return () => {
-      debouncedResults.cancel(); // Cleanup the debounced function on unmount
+      debouncedResults.cancel(); // clean up
     };
   }, [debouncedResults]);
 
   return (
-    <div className="flex justify-end w-full">
-      <div className="flex items-center max-w-md space-x-2 bg-muted rounded-lg px-2 py-2">
+    <div className="flex justify-end w-full mt-8">
+      <div className="flex items-center  max-w-[100%] sm:max-w-sm md:max-w-md space-x-2 bg-muted rounded-lg px-2 py-2">
         <SearchIcon className="h-4 w-4" />
         <Input
           type="search"

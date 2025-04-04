@@ -1,19 +1,12 @@
-'use client'
-
-import { useTheme } from "next-themes";
-
 export function StatsSkeleton() {
-  const { theme } = useTheme();
-  const strokeColor = theme === "light" ? "rgba(100, 100, 100, 0.5)" : "rgba(200, 200, 200, 0.2)";
-
   return (
     <div className="w-full h-full flex items-center justify-center">
       <svg width="100%" height="100%" viewBox="0 0 400 400">
         {/* Background circles */}
-        <circle cx="200" cy="200" r="120" fill="none" stroke={strokeColor} strokeDasharray="4 4" />
-        <circle cx="200" cy="200" r="90" fill="none" stroke={strokeColor} strokeDasharray="4 4" />
-        <circle cx="200" cy="200" r="60" fill="none" stroke={strokeColor} strokeDasharray="4 4" />
-        <circle cx="200" cy="200" r="30" fill="none" stroke={strokeColor} strokeDasharray="4 4" />
+        <circle cx="200" cy="200" r="120" fill="none" stroke='rgba(100, 100, 100, 0.5)' strokeDasharray="4 4" />
+        <circle cx="200" cy="200" r="90" fill="none" stroke='rgba(100, 100, 100, 0.5)' strokeDasharray="4 4" />
+        <circle cx="200" cy="200" r="60" fill="none" stroke='rgba(100, 100, 100, 0.5)' strokeDasharray="4 4" />
+        <circle cx="200" cy="200" r="30" fill="none" stroke='rgba(100, 100, 100, 0.5)' strokeDasharray="4 4" />
 
         {/* Axis lines */}
         {["Special Attack", "Attack", "Defense", "Special Defense", "Speed", "HP"].map((_, index) => {
@@ -28,7 +21,7 @@ export function StatsSkeleton() {
               y1="200"
               x2={x}
               y2={y}
-              stroke={strokeColor}
+              stroke='rgba(100, 100, 100, 0.5)'
               strokeDasharray="4 4"
             />
           );

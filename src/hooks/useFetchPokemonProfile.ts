@@ -43,10 +43,13 @@ export function useFetchPokemonProfile(id: number): ApiResponse<PokemonProfile> 
         types,
       } = response.data;
       
-      const formattedAbilities = await fetchAbilities(abilities);
-      const evolutionChainData = await fetchEvolutionChain(id);
-      const formattedTypes = await formatTypes(types);
-      const descriptions = await fetchPokemonDescription(id);
+      const [formattedAbilities, evolutionChainData, descriptions] = await Promise.all([
+        fetchAbilities(abilities),
+        fetchEvolutionChain(id),
+        fetchPokemonDescription(id)
+      ]);
+
+      const formattedTypes = formatTypes(types);
       const latestCry = cries.latest;
       const formattedStats = processStats(stats);
       const weaknesses = getWeaknesses(formattedTypes);
@@ -122,7 +125,6 @@ async function fetchAbilities(abilities: any): Promise<PokemonAbility[]> {
     return pokemonAbilities;
   } catch (error: unknown) {
     return [];
-    throw error;
   }
 }
 
@@ -145,8 +147,8 @@ async function fetchEvolutionChain(id: number): Promise<EvolutionChain> {
     const buildEvolutionChain = async (chainData: any): Promise<EvolutionChain> => {
       if(chain.evolves_to.length === 0){
         return {
-          name: '',
-          photo: '',
+          name: chainData.species.name,
+          photo: getPhotoURL(id),
           evolvesTo: []
         }
       } else{
@@ -193,7 +195,7 @@ function formatTypes(types: any): PokemonType[] {
 async function fetchPokemonDescription(id: number) {
   try{
     const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
-    const data = await response.data;
+    const data = response.data;
 
     // english desc
     const descriptions: string[] = data.flavor_text_entries

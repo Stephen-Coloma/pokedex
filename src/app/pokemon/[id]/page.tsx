@@ -1,5 +1,5 @@
 import { Header } from "@/components/header";
-import { PokemonProfileComponent } from "@/components/pokemon-profile";
+import { PokemonProfileComponent } from "@/components/pokemon-profile-component";
 import { Separator } from "@/components/ui/separator";
 
 type PokemonDetailsPageProps = {

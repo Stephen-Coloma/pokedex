@@ -1,7 +1,7 @@
 "use client"
 
 import type { Pokemon } from "@/types/Pokemon"
-import { getTypeColor } from "@/lib/colors"
+import { getTypeColor, hexToRgba } from "@/lib/colors"
 import { PokemonTypeIcon } from "./pokemon-type-icon"
 import { Badge } from "./ui/badge"
 import { Sparkles } from "lucide-react"
@@ -55,6 +55,10 @@ export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCa
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      style={{
+        borderColor: getTypeColor(types[0]),
+        backgroundColor:  hexToRgba(getTypeColor(types[0]), 0.2),
+      }}
     >
       {/* Custom shaped card  */}
       <div
@@ -67,12 +71,6 @@ export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCa
         {/* Holder for pokeball bg */}
         <div
           className="relative"
-          style={{
-            backgroundImage: `url('/pokeball-bg.svg')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >

@@ -1,12 +1,17 @@
-  export function RadarChart({ data, primaryColor }: { data: any[], primaryColor: string }) {
+import { useTheme } from "next-themes";
+
+export function RadarChart({ data, primaryColor }: { data: any[], primaryColor: string }) {
+  const { theme } = useTheme();
+  const strokeColor = theme === "light" ? "rgba(100, 100, 100, 0.5)" : "rgba(200, 200, 200, 0.2)";
+
   return (
     <div className="w-full h-full flex items-center justify-center">
       <svg width="100%" height="100%" viewBox="0 0 400 400">
         {/* Background circles */}
-        <circle cx="200" cy="200" r="120" fill="none" stroke="rgba(200, 200, 200, 0.2)" />
-        <circle cx="200" cy="200" r="90" fill="none" stroke="rgba(200, 200, 200, 0.2)" />
-        <circle cx="200" cy="200" r="60" fill="none" stroke="rgba(200, 200, 200, 0.2)" />
-        <circle cx="200" cy="200" r="30" fill="none" stroke="rgba(200, 200, 200, 0.2)" />
+        <circle cx="200" cy="200" r="120" fill="none" stroke={`${strokeColor}`} />
+        <circle cx="200" cy="200" r="90" fill="none" stroke={`${strokeColor}`} />
+        <circle cx="200" cy="200" r="60" fill="none" stroke={`${strokeColor}`} />
+        <circle cx="200" cy="200" r="30" fill="none" stroke={`${strokeColor}`} />
         
         {/* Axis lines */}
         {data.map((entry, index) => {
@@ -20,7 +25,7 @@
               y1="200" 
               x2={x} 
               y2={y} 
-              stroke="rgba(200, 200, 200, 0.3)" 
+              stroke= {`${strokeColor}`}
             />
           );
         })}
@@ -109,4 +114,4 @@
       </svg>
     </div>
   );
-  }
+}

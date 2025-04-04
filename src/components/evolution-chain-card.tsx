@@ -37,13 +37,15 @@ export function EvolutionChainCard({ evolution }: { evolution: any }) {
     return (
       <div key={evo.name} className="flex flex-col items-center min-w-[100px]">
         <div className="relative w-20 h-20 mb-2">
-          <Image
+          {evo.photo && (
+            <Image
             src={evo.photo || "/placeholder.svg"}
             alt={evo.name}
             fill
             priority
             className="object-contain"
           />
+          )}
         </div>
         <div className="text-center font-medium">{evo.name}</div>
 

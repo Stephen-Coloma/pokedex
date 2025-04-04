@@ -121,6 +121,7 @@ async function fetchAbilities(abilities: any): Promise<PokemonAbility[]> {
 
     return pokemonAbilities;
   } catch (error: unknown) {
+    return [];
     throw error;
   }
 }
@@ -142,18 +143,26 @@ async function fetchEvolutionChain(id: number): Promise<EvolutionChain> {
 
     // Function to build the evolution chain recursively
     const buildEvolutionChain = async (chainData: any): Promise<EvolutionChain> => {
-      const currentPokemon = chainData.species;
-      const pokemonResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${currentPokemon.name}`);
-      const evolvesToPromises = chainData.evolves_to.map(buildEvolutionChain); // Create an array of promises
-      const evolvesTo = await Promise.all(evolvesToPromises); // Await all promises to get the resolved values
+      if(chain.evolves_to.length === 0){
+        return {
+          name: '',
+          photo: '',
+          evolvesTo: []
+        }
+      } else{
+        const currentPokemon = chainData.species;
+        const pokemonResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${currentPokemon.name}`);
+        const evolvesToPromises = chainData.evolves_to.map(buildEvolutionChain); // Create an array of promises
+        const evolvesTo = await Promise.all(evolvesToPromises); // Await all promises to get the resolved values
 
-      const evolution: EvolutionChain = {
-        name: currentPokemon.name,
-        photo: getPhotoURL(pokemonResponse.data.id),
-        evolvesTo: evolvesTo, // Use the resolved array of evolution objects
-      };
+        const evolution: EvolutionChain = {
+          name: currentPokemon.name,
+          photo: getPhotoURL(pokemonResponse.data.id),
+          evolvesTo: evolvesTo, // Use the resolved array of evolution objects
+        };
 
-      return evolution;
+        return evolution;
+      }
     };
 
     // Return the first evolution chain starting point

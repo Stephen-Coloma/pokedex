@@ -62,7 +62,6 @@ export default function Home() {
 
   return (
     <div className="container mx-auto w-full px-5">
-      <Button onClick={()=> handleViewProfile(133)}>Click me</Button>
       <Header></Header>
       <Separator></Separator>
       <Banner></Banner>
@@ -79,10 +78,10 @@ export default function Home() {
           />
         </div>
         :
-        <div className="w-fit grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
+        <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
           {visibleCards &&
             visibleCards.map((pokemon, index) => (
-              <PokemonCard key={index} {...pokemon} />
+              <PokemonCard key={index} {...pokemon} onViewProfile={handleViewProfile}/>
             ))}
         </div>
       }

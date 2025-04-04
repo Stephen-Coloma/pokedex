@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import { getTypeColor, hexToRgba} from "@/lib/colors";
 import { BookOpen, ChevronUp, ChevronDown, Zap, Info, Flame, GitBranch, MousePointerClick, Sparkles,} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Card, CardContent } from "./ui/card";
+import { CardContent } from "./ui/card";
 import Image from "next/image"
 import { PokemonProfile } from "@/types/PokemonProfile";
 import { PokemonTypeIcon } from "./pokemon-type-icon";
@@ -14,6 +14,8 @@ import { StatsChart } from "./stats-chart";
 import ProfileSettingsIsland from "./profile-settings-island";
 import type { MouseEvent } from "react"
 import { PokemonProfileSkeleton } from "./pokemon-profile-skeleton";
+import {motion} from 'framer-motion'
+import { cardVariants } from "./pokemon-card";
 
 export function PokemonProfileComponent({id}: {id: number}) {
   const {status, data, loading} = useFetchPokemonProfile(id)
@@ -87,8 +89,8 @@ export function PokemonProfileComponent({id}: {id: number}) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Header Card - Name, ID, Photo */}
-      <Card
-        className={`col-span-1 md:col-span-3 overflow-hidden shadow-md border-4`}
+      <motion.div
+        className={`col-span-1 md:col-span-3 overflow-hidden shadow-md border-4 bg-card text-card-foreground rounded-xl py-6`}
         style={{
           borderColor: getTypeColor(pokemon.types[0]),
           backgroundColor:  hexToRgba(getTypeColor(pokemon.types[0]), 0.3),
@@ -97,6 +99,9 @@ export function PokemonProfileComponent({id}: {id: number}) {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onMouseEnter={() => setIsHovering(true)}
+        variants={cardVariants}
+        initial="initial"
+        animate="animate"
       >
         <div className={`relative bg-opacity-20 dark:bg-opacity-10 p-6 flex flex-col md:flex-row items-center gap-6`}>
           {/* Left section: Image and details - 50% width on desktop */}
@@ -178,15 +183,19 @@ export function PokemonProfileComponent({id}: {id: number}) {
           </h1>
           
         </div>
-      </Card>
+      </motion.div>
 
       {/* Left Column */}
       <div className="col-span-1 md:col-span-2 space-y-6">
         {/* Description Card */}
-        <Card className={`overflow-hidden shadow-md border-2`}
-        style={{
-          borderColor: getTypeColor(pokemon.types[0])
-        }}>
+        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6`}
+          style={{
+            borderColor: getTypeColor(pokemon.types[0])
+          }}
+          variants={cardVariants}
+          initial="initial"
+          animate="animate"
+        >
           <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <BookOpen color={`${getTypeColor(pokemon.types[0])}`}/>
@@ -224,13 +233,17 @@ export function PokemonProfileComponent({id}: {id: number}) {
               )}
             </div>
           </CardContent>
-        </Card>
+        </motion.div>
 
         {/* Abilities Card */}
-        <Card className={`overflow-hidden shadow-md border-2`}
-      style={{
-          borderColor: getTypeColor(pokemon.types[0])
-        }}>
+        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6`}
+          variants={cardVariants}
+          initial="initial"
+          animate="animate"
+          style={{
+            borderColor: getTypeColor(pokemon.types[0])
+          }}
+        >
           <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <Zap color={`${getTypeColor(pokemon.types[0])}`} />
@@ -256,16 +269,20 @@ export function PokemonProfileComponent({id}: {id: number}) {
               ))}
             </div>
           </CardContent>
-        </Card>
+        </motion.div>
       </div>
 
       {/* Right Column */}
       <div className="col-span-1 space-y-6">
         {/* Basic Info Card */}
-        <Card className={`overflow-hidden shadow-md border-2`}
-        style={{
-          borderColor: getTypeColor(pokemon.types[0])
-        }}>
+        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6`}
+          variants={cardVariants}
+          initial="initial"
+          animate="animate"
+          style={{
+            borderColor: getTypeColor(pokemon.types[0])
+          }}
+        >
           <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <Info color={`${getTypeColor(pokemon.types[0])}`}/>
@@ -286,11 +303,14 @@ export function PokemonProfileComponent({id}: {id: number}) {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </motion.div>
 
         {/* Weaknesses Card */}
-        <Card
-          className={`overflow-hidden shadow-md border-2`}
+        <motion.div
+          className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6`}
+          variants={cardVariants}
+          initial="initial"
+          animate="animate"
           style={{
             borderColor: getTypeColor(pokemon.types[0]),
           }}
@@ -306,13 +326,17 @@ export function PokemonProfileComponent({id}: {id: number}) {
               ))}
             </div>
           </CardContent>
-        </Card>
+        </motion.div>
 
         {/* Evolution Chain Card */}
-        <Card className={`overflow-hidden shadow-md border-2`}
-        style={{
-          borderColor: getTypeColor(pokemon.types[0])
-        }}>
+        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6`}
+          variants={cardVariants}
+          initial="initial"
+          animate="animate"
+          style={{
+            borderColor: getTypeColor(pokemon.types[0])
+          }}
+        >
           <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <GitBranch color={`${getTypeColor(pokemon.types[0])}`} />
@@ -320,7 +344,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
             </div>
             <EvolutionChainCard evolution={pokemon.evolutionChain} />
           </CardContent>
-        </Card>
+        </motion.div>
       </div>
 
       {/* Floating settings island */}

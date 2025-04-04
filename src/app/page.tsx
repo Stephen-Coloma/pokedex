@@ -93,8 +93,8 @@ export default function Home() {
         :
         <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
           {visibleCards &&
-            visibleCards.map((pokemon, index) => (
-              <PokemonCard key={index} {...pokemon} onViewProfile={handleViewProfile}/>
+            visibleCards.map((pokemon) => (
+              <PokemonCard key={pokemon.id} {...pokemon} onViewProfile={handleViewProfile}/>
             ))}
         </div>
       }

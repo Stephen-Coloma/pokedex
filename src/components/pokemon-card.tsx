@@ -6,12 +6,17 @@ import { PokemonTypeIcon } from "./pokemon-type-icon"
 import { Badge } from "./ui/badge"
 import { Sparkles } from "lucide-react"
 import { useRef, useState } from "react"
-import { Card } from "./ui/card"
 import type { MouseEvent } from "react"
 import Image from "next/image"
+import { motion } from "framer-motion"
 
 export type PokemonCardProps = Pokemon & {
   onViewProfile: (id: number) => void
+}
+
+export const cardVariants = {
+  initial: { opacity: 0, y: 20, scale: 0.9 },
+  animate: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", damping: 15, stiffness: 100 } },
 }
 
 export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCardProps) {
@@ -50,7 +55,7 @@ export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCa
 
   return (
     // main container
-    <Card
+    <motion.div
       className={`border-2 p-0 relative w-full h-[fit] max-w-xs mx-auto rounded-xl bg-muted overflow-hidden`}
       ref={cardRef}
       onMouseMove={handleMouseMove}
@@ -59,6 +64,9 @@ export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCa
         borderColor: getTypeColor(types[0]),
         backgroundColor:  hexToRgba(getTypeColor(types[0]), 0.2),
       }}
+      variants={cardVariants}
+      initial="initial"
+      animate="animate"
     >
       {/* Custom shaped card  */}
       <div
@@ -164,7 +172,6 @@ export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCa
           />
         </div>
       </div>
-    </Card>
+    </motion.div>
   )
 }
-

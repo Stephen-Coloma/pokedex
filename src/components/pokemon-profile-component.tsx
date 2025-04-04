@@ -187,7 +187,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
         style={{
           borderColor: getTypeColor(pokemon.types[0])
         }}>
-          <CardContent className="p-6">
+          <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <BookOpen color={`${getTypeColor(pokemon.types[0])}`}/>
               <h2 className="text-xl font-semibold">Description</h2>
@@ -195,7 +195,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
             <div className="space-y-3">
               {displayDescriptions.map((desc, index) => (
                 <div key={index} className="flex text-gray-700 dark:text-gray-300">
-                  <span className="inline-block w-15 flex-shrink-0 font-medium"
+                  <span className=" text-xs sm:text-sm md:text-base inline-block w-15 flex-shrink-0 font-medium"
                     style={{
                       color: getTypeColor(pokemon.types[0])
                     }}
@@ -206,7 +206,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
               {pokemon.descriptions.length > 4 && (
                 <Button
                   onClick={() => setShowAllDescriptions(!showAllDescriptions)}
-                  className="flex items-center gap-1 mt-2"
+                  className="flex items-center gap-1 mt-2 text-xs sm:text-sm md:text-base"
                   style={{
                     backgroundColor: getTypeColor(pokemon.types[0])
                   }}
@@ -231,7 +231,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
       style={{
           borderColor: getTypeColor(pokemon.types[0])
         }}>
-          <CardContent className="p-6">
+          <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <Zap color={`${getTypeColor(pokemon.types[0])}`} />
               <h2 className="text-xl font-semibold">Abilities</h2>
@@ -266,7 +266,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
         style={{
           borderColor: getTypeColor(pokemon.types[0])
         }}>
-          <CardContent className="p-6">
+          <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <Info color={`${getTypeColor(pokemon.types[0])}`}/>
               <h2 className="text-xl font-semibold">Basic Info</h2>
@@ -295,7 +295,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
             borderColor: getTypeColor(pokemon.types[0]),
           }}
         >
-          <CardContent className="p-6">
+          <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <Flame color={`${getTypeColor(pokemon.types[0])}`} />
               <h2 className="text-xl font-semibold">Weaknesses</h2>
@@ -313,7 +313,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
         style={{
           borderColor: getTypeColor(pokemon.types[0])
         }}>
-          <CardContent className="p-6">
+          <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <GitBranch color={`${getTypeColor(pokemon.types[0])}`} />
               <h2 className="text-xl font-semibold">Evolution Chain</h2>

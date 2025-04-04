@@ -43,7 +43,7 @@ export function PokemonProfileSkeleton() {
       <div className="col-span-1 md:col-span-2 space-y-6">
         {/* Description Card */}
         <Card className="overflow-hidden shadow-md border-2 border-gray-200 dark:border-gray-700">
-          <CardContent className="p-6">
+          <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <BookOpen className="text-gray-400" />
               <h2 className="text-xl font-semibold">Description</h2>
@@ -64,7 +64,7 @@ export function PokemonProfileSkeleton() {
 
         {/* Abilities Card */}
         <Card className="overflow-hidden shadow-md border-2 border-gray-200 dark:border-gray-700">
-          <CardContent className="p-6">
+          <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <Zap className="text-gray-400" />
               <h2 className="text-xl font-semibold">Abilities</h2>
@@ -94,7 +94,7 @@ export function PokemonProfileSkeleton() {
       <div className="col-span-1 space-y-6">
         {/* Basic Info Card */}
         <Card className="overflow-hidden shadow-md border-2 border-gray-200 dark:border-gray-700">
-          <CardContent className="p-6">
+          <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <Info className="text-gray-400" />
               <h2 className="text-xl font-semibold">Basic Info</h2>
@@ -112,7 +112,7 @@ export function PokemonProfileSkeleton() {
 
         {/* Weaknesses Card */}
         <Card className="overflow-hidden shadow-md border-2 border-gray-200 dark:border-gray-700">
-          <CardContent className="p-6">
+          <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <Flame className="text-gray-400" />
               <h2 className="text-xl font-semibold">Weaknesses</h2>
@@ -127,7 +127,7 @@ export function PokemonProfileSkeleton() {
 
         {/* Evolution Chain Card */}
         <Card className="overflow-hidden shadow-md border-2 border-gray-200 dark:border-gray-700">
-          <CardContent className="p-6">
+          <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <GitBranch className="text-gray-400" />
               <h2 className="text-xl font-semibold">Evolution Chain</h2>

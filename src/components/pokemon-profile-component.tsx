@@ -10,9 +10,10 @@ import Image from "next/image"
 import { PokemonProfile } from "@/types/PokemonProfile";
 import { PokemonTypeIcon } from "./pokemon-type-icon";
 import { EvolutionChainCard } from "./evolution-chain-card";
-import { RadarChart } from "./radar-chart";
+import { StatsChart } from "./stats-chart";
 import ProfileSettingsIsland from "./profile-settings-island";
 import type { MouseEvent } from "react"
+import { PokemonProfileSkeleton } from "./pokemon-profile-skeleton";
 
 export function PokemonProfileComponent({id}: {id: number}) {
   const {status, data, loading} = useFetchPokemonProfile(id)
@@ -39,7 +40,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
     }
   }, [showAllDescriptions, loading])
 
-  if(!pokemon) return <h1>loading</h1>;
+  if(!pokemon) return <PokemonProfileSkeleton></PokemonProfileSkeleton>;
   
   // Prepare stats data for radar chart
   const statsData = [
@@ -87,7 +88,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Header Card - Name, ID, Photo */}
       <Card
-        className={`col-span-1 md:col-span-3 overflow-hidden shadow-md border-2`}
+        className={`col-span-1 md:col-span-3 overflow-hidden shadow-md border-4`}
         style={{
           borderColor: getTypeColor(pokemon.types[0]),
           backgroundColor:  hexToRgba(getTypeColor(pokemon.types[0]), 0.3),
@@ -167,7 +168,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
           {/* Right section: Radar chart - 50% width on desktop */}
           <div className="w-full md:w-1/2 mt-6 md:mt-0 flex items-center justify-center">
             <div className="w-full max-w-md">
-              <RadarChart data={statsData} primaryColor={getTypeColor(pokemon.types[0])} />
+              <StatsChart data={statsData} primaryColor={getTypeColor(pokemon.types[0])} />
             </div>
           </div>
 

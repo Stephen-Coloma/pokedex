@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
 
-export function RadarChart({ data, primaryColor }: { data: any[], primaryColor: string }) {
+export function StatsChart({ data, primaryColor }: { data: any[], primaryColor: string }) {
   const { theme } = useTheme();
   const strokeColor = theme === "light" ? "rgba(100, 100, 100, 0.5)" : "rgba(200, 200, 200, 0.2)";
 

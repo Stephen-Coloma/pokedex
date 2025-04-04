@@ -67,12 +67,11 @@ export default function Home() {
 
   return (
     <div className="container mx-auto w-full px-5">
-      <Button onClick={()=> handleViewProfile(35)}>Click me</Button>
       <Header></Header>
       <Separator></Separator>
       <Banner></Banner>
 
-      {/* <SearchPokemon onSearchPokemon={handleSearchPokemon}/> */}
+      <SearchPokemon onSearchPokemon={handleSearchPokemon}/>
 
       <Separator className="mt-10"></Separator>
 

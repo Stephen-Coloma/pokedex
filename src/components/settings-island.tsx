@@ -2,14 +2,11 @@
 
 import { useEffect, useState } from "react";
 import {
-  Volume2,
-  VolumeX,
   Loader2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { SortDropDownMenu } from "./sort-dropdown-menu";
 import { ModeToggle } from "./mode-toggle";
@@ -27,7 +24,6 @@ type SettingsIslandProps = {
 
 export default function SettingsIsland({onSortChange, onLoadMorecards, isSearching, limit, offset}: SettingsIslandProps) {
   const { status, data, loading, executeGetRequest} = useFetchPokemons(limit, offset, false);
-  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const searchResults = usePokemonStore((state)=> state.searchResults);
   const [localLoading, setLocalLoading] = useState<boolean>(false); // loading for viewing searched cards
 
@@ -59,26 +55,6 @@ export default function SettingsIsland({onSortChange, onLoadMorecards, isSearchi
           <div className="flex flex-wrap items-center justify-between gap-3 md:flex-nowrap">
 
             <SortDropDownMenu onSortChange={onSortChange}></SortDropDownMenu>
-
-            <Separator orientation="vertical" className="h-6 hidden md:block" />
-
-            <div className="flex items-center gap-2">
-              <VolumeX
-                className={`h-4 w-4 transition-all ${
-                  soundEnabled ? "-rotate-90 scale-0" : "rotate-0 scale-100"
-                }`}
-              />
-              <Volume2
-                className={`h-4 w-4 absolute transition-all ${
-                  soundEnabled ? "rotate-0 scale-100" : "rotate-90 scale-0"
-                }`}/>
-              <Switch
-                id="sounds"
-                checked={soundEnabled}
-                onCheckedChange={setSoundEnabled}
-                aria-label="Toggle sounds"
-              />
-            </div>
 
             <Separator orientation="vertical" className="h-6 hidden md:block" />
 

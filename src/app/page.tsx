@@ -73,13 +73,15 @@ export default function Home() {
 
       <SearchPokemon onSearchPokemon={handleSearchPokemon}/>
 
+      <Separator className="mt-10"></Separator>
+
       {loading ? 
-        <div className="flex justify-center py-10">
+        <div className="flex justify-center py-10 flex-grow">
         <DotLottieReact
             src="https://lottie.host/6b970764-42a6-4f36-9983-2792f3df8edc/bIa223kckN.lottie"
             loop
             autoplay
-            className="w-96"
+            className="w-130"
           />
         </div>
         :
@@ -91,7 +93,7 @@ export default function Home() {
         </div>
       }
 
-      <div className="py-10">
+      <div className="py-10 border-t-2">
         <SettingsIsland
           onSortChange={handleSortChange}
           onLoadMorecards={handleLoadMoreCards}

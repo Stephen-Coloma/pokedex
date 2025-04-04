@@ -124,7 +124,7 @@ async function fetchAbilities(abilities: any): Promise<PokemonAbility[]> {
 
     return pokemonAbilities;
   } catch (error: unknown) {
-    return [];
+    throw error;
   }
 }
 

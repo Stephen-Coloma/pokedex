@@ -1,18 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Volume2, VolumeX, Loader2, House, ChevronLeft, ChevronRight } from "lucide-react";
-
+import { Loader2, House, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { ModeToggle } from "./mode-toggle";
 import { useRouter } from "next/navigation";
 
 
 export default function ProfileSettingsIsland({id} : {id: number}) {
-  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [nextLoading, setNextLoading] = useState<boolean>(false); //loading simulation
   const [prevLoading, setPrevLoading] = useState<boolean>(false); //loading simulation
   const router = useRouter();
@@ -60,27 +56,6 @@ export default function ProfileSettingsIsland({id} : {id: number}) {
             </Button>
 
             <Separator orientation="vertical" className="h-6 hidden md:block" />
-
-            <div className="flex items-center gap-2">
-              <VolumeX
-                className={`h-4 w-4 transition-all ${
-                  soundEnabled ? "-rotate-90 scale-0" : "rotate-0 scale-100"
-                }`}
-              />
-              <Volume2
-                className={`h-4 w-4 absolute transition-all ${
-                  soundEnabled ? "rotate-0 scale-100" : "rotate-90 scale-0"
-                }`}
-              />
-              <Switch
-                id="sounds"
-                checked={soundEnabled}
-                onCheckedChange={setSoundEnabled}
-                aria-label="Toggle sounds"
-              />
-            </div>
-
-            <Separator orientation="vertical" className="h-6 hidden md:block" />
                 
             {/* HOME BUTTON */}
             <Button
@@ -92,8 +67,6 @@ export default function ProfileSettingsIsland({id} : {id: number}) {
             </Button>
 
             <Separator orientation="vertical" className="h-6 hidden md:block" />
-
-            <ModeToggle></ModeToggle>
 
             <Separator orientation="vertical" className="h-6 hidden md:block" />
 

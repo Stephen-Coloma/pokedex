@@ -27,7 +27,7 @@ export const usePokemonStore = create<PokemonState>((set) => ({
   pokemonData: [],
   fetchPokemon: async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 600));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const url = "https://pokeapi.co/api/v2/pokemon/?limit=1025&offset=0";
       const response: AxiosResponse = await axios.get(url);
 

@@ -16,6 +16,7 @@ export default function Home() {
   const limit = 10;
   const [offset, setOffset] = useState<number>(0);
   const { status, data, loading, executeGetRequest } = useFetchPokemons(limit,offset);
+  const [searchDataLoading, setSearchDataLoading] =  useState<boolean>(false);
   const [visibleCards, setVisibleCards] = useState<Pokemon[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const router = useRouter();
@@ -55,10 +56,15 @@ export default function Home() {
     setOffset((prev) => prev + limit); //10 + 10;
   };
 
-  const handleSearchPokemon = (searchResults: Pokemon[], isSearching: boolean) => {
-    setOffset(0); //always return offset to zero when searching
-    setIsSearching(isSearching);
-    setVisibleCards(searchResults);
+  const handleSearchPokemon = (searchResults: Pokemon[], isSearching: boolean, isSearchDataLoading: boolean) => {
+    if(isSearchDataLoading){
+      setSearchDataLoading(isSearchDataLoading);
+    }else{
+      setSearchDataLoading(isSearchDataLoading);
+      setOffset(0); //always return offset to zero when searching
+      setIsSearching(isSearching);
+      setVisibleCards(searchResults);
+    }
   };
 
   const handleViewProfile = (id: number) => {
@@ -67,16 +73,15 @@ export default function Home() {
 
   return (
     <div className="container mx-auto w-full px-5">
-      <Button onClick={()=> handleViewProfile(35)}>Click me</Button>
       <Header></Header>
       <Separator></Separator>
       <Banner></Banner>
 
-      {/* <SearchPokemon onSearchPokemon={handleSearchPokemon}/> */}
+      <SearchPokemon onSearchPokemon={handleSearchPokemon}/>
 
       <Separator className="mt-10"></Separator>
 
-      {loading ? 
+      {loading || searchDataLoading ? 
         <div className="flex justify-center py-10 flex-grow">
         <DotLottieReact
             src="https://lottie.host/6b970764-42a6-4f36-9983-2792f3df8edc/bIa223kckN.lottie"

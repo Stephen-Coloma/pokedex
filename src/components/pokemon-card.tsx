@@ -77,9 +77,11 @@ export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCa
           {/* Card header */}
           <div className="pt-4 px-2 sm:px-4 relative">
             <div className="flex justify-between items-center">
-              <h3 className="text-sm sm:text-md md:text-lg font-medium text-primary capitalize tracking-wide">
+            <div className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+              <h3 className="text-sm sm:text-base md:text-sm font-medium text-primary capitalize tracking-wide">
                 {name}
               </h3>
+            </div>
               <Badge className="text-white bg-primary/30 rounded-full px-1 sm:px-2 sm:py-1 text-xs font-light tracking-wider">
                 # {id.toString().padStart(3, "0")}
               </Badge>
@@ -108,7 +110,7 @@ export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCa
                 width={200}
                 height={200}
                 priority
-                className={`transition-all duration-300 ${isHovering ? "scale-110 drop-shadow-2xl" : "scale-100"}`}
+                className={`h-full transition-all duration-300 ${isHovering ? "scale-110 drop-shadow-2xl" : "scale-100"}`}
               />
 
               {/* Shiny sparkle effects that appear on hover */}

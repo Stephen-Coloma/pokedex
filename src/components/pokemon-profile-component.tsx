@@ -200,7 +200,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
                       color: getTypeColor(pokemon.types[0])
                     }}
                   >[{index + 1}]</span>
-                  <p>{desc}</p>
+                  <p className="text-xs sm:text-sm md:text-base">{desc}</p>
                 </div>
               ))}
               {pokemon.descriptions.length > 4 && (
@@ -226,8 +226,6 @@ export function PokemonProfileComponent({id}: {id: number}) {
           </CardContent>
         </Card>
 
-        
-
         {/* Abilities Card */}
         <Card className={`overflow-hidden shadow-md border-2`}
       style={{
@@ -249,10 +247,10 @@ export function PokemonProfileComponent({id}: {id: number}) {
                     style={{
                       backgroundColor: getTypeColor(pokemon.types[0])
                     }}></div>
-                    {ability.name.replaceAll('-', ' ')}
+                    <p className="text-base">{ability.name.replaceAll('-', ' ')}</p>
                   </div>
                   <div className="text-gray-700 dark:text-gray-300 max-h-24 overflow-y-auto pr-2 scrollbar-thin">
-                    {ability.effect}
+                    <p className="text-xs sm:text-sm md:text-sm">{ability.effect}</p>
                   </div>
                 </div>
               ))}
@@ -275,16 +273,16 @@ export function PokemonProfileComponent({id}: {id: number}) {
             </div>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">Height</span>
-                <span>{pokemon.height / 10} m</span>
+                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Height</span>
+                <span className="text-sm sm:text-base">{pokemon.height / 10} m</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">Weight</span>
-                <span>{pokemon.weight / 10} kg</span>
+                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Weight</span>
+                <span className="text-sm sm:text-base">{pokemon.weight / 10} kg</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">Base Experience</span>
-                <span>{pokemon.baseExperience}</span>
+                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Base Experience</span>
+                <span className="text-sm sm:text-base">{pokemon.baseExperience}</span>
               </div>
             </div>
           </CardContent>

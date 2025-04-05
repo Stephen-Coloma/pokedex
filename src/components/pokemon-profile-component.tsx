@@ -3,7 +3,7 @@
 import { useFetchPokemonProfile } from "@/hooks/useFetchPokemonProfile";
 import { Button } from "./ui/button";
 import { getTypeColor, hexToRgba} from "@/lib/colors";
-import { BookOpen, ChevronUp, ChevronDown, Zap, Info, Flame, GitBranch, MousePointerClick, Sparkles,} from "lucide-react";
+import { BookOpen, ChevronUp, ChevronDown, Zap, Info, Flame, GitBranch, MousePointerClick, Sparkles, Volume2,} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CardContent } from "./ui/card";
 import Image from "next/image"
@@ -16,6 +16,7 @@ import type { MouseEvent } from "react"
 import { PokemonProfileSkeleton } from "./pokemon-profile-skeleton";
 import {motion} from 'framer-motion'
 import { cardVariants } from "./pokemon-card";
+import { textRevealVariant1, textRevealVariant2 } from "@/lib/motion";
 
 export function PokemonProfileComponent({id}: {id: number}) {
   const {status, data, loading} = useFetchPokemonProfile(id)
@@ -23,7 +24,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
   const [showAllDescriptions, setShowAllDescriptions] = useState(false);
   const [displayDescriptions , setDisplayDescriptions] = useState<string[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isHovering, setIsHovering] = useState<boolean>(false)
+  const [isHovering, setIsHovering] = useState<boolean>(false);
   const cardRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(()=>{
@@ -153,18 +154,40 @@ export function PokemonProfileComponent({id}: {id: number}) {
               <audio ref={audioRef} src={`${pokemon.cry}`} style={{ display: "none" }}></audio>
             </div>
             <div className="flex flex-col items-center mt-4">
-              <div className="text-lg tracking-wider text-gray-500 dark:text-gray-400">#{pokemon.id.toString().padStart(3, "0")}</div>
-              <h1
+              {/* id */}
+              <motion.div className="text-lg tracking-wider text-gray-500 dark:text-gray-400"
+                variants={textRevealVariant2} 
+                initial="initial" 
+                animate="animate"
+                transition={{duration: 1, delay: 0 * .4}}
+              >
+                #{pokemon.id.toString().padStart(3, "0")}
+              </motion.div>
+              {/* name */}
+              <motion.p
+                variants={textRevealVariant2} 
+                initial="initial" 
+                animate="animate"
+                transition={{duration: 1, delay: 1 * .4}}
                 className="text-4xl font-bold mb-4 capitalize text-center"
                 style={{
                   color: getTypeColor(pokemon.types[0]),
                 }}
               >
                 {pokemon.name}
-              </h1>
+              </motion.p>
+              {/* types */}
               <div className="flex gap-2">
                 {pokemon.types.map((type, index) => (
-                  <PokemonTypeIcon key={index} type={type} pageCaller="profile"></PokemonTypeIcon>
+                  <motion.div
+                    variants={textRevealVariant2} 
+                    initial="initial" 
+                    animate="animate"
+                    transition={{duration: 1, delay: 2 * .4}}
+                    key={index}
+                  >
+                    <PokemonTypeIcon type={type} pageCaller="profile"></PokemonTypeIcon>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -177,10 +200,14 @@ export function PokemonProfileComponent({id}: {id: number}) {
             </div>
           </div>
 
+          {/* Click pokemon */}
           <h1 className="absolute bottom-0 text-sm block flex items-center justify-center gap-2 w-full ">
             <MousePointerClick></MousePointerClick>
             click pokemon!
           </h1>
+
+          {/* volume icon */}
+          <Volume2 className="absolute top-0 right-7" size={25}></Volume2>
           
         </div>
       </motion.div>
@@ -209,7 +236,15 @@ export function PokemonProfileComponent({id}: {id: number}) {
                       color: getTypeColor(pokemon.types[0])
                     }}
                   >[{index + 1}]</span>
-                  <p className="text-xs sm:text-sm md:text-base">{desc}</p>
+                  <motion.p 
+                    className="text-xs sm:text-sm md:text-base"
+                    variants={textRevealVariant1}
+                    initial="initial"
+                    animate="animate"
+                    transition={{ duration: 1, delay: ((index < 3) ?  ((1+index) * 0.2) : ((index-3) * 0.2))  }}
+                  >
+                    {desc}
+                  </motion.p>
                 </div>
               ))}
               {pokemon.descriptions.length > 4 && (
@@ -263,7 +298,15 @@ export function PokemonProfileComponent({id}: {id: number}) {
                     <p className="text-base">{ability.name.replaceAll('-', ' ')}</p>
                   </div>
                   <div className="text-gray-700 dark:text-gray-300 max-h-24 overflow-y-auto pr-2 scrollbar-thin">
-                    <p className="text-xs sm:text-sm md:text-sm">{ability.effect}</p>
+                    <motion.p 
+                      className="text-xs sm:text-sm md:text-sm"
+                      variants={textRevealVariant1}
+                      initial="initial"
+                      animate="animate"
+                      transition={{ duration: 1, delay: index * 0.5 }}
+                    >
+                      {ability.effect}
+                    </motion.p>
                   </div>
                 </div>
               ))}
@@ -289,18 +332,33 @@ export function PokemonProfileComponent({id}: {id: number}) {
               <h2 className="text-xl font-semibold">Basic Info</h2>
             </div>
             <div className="space-y-3">
-              <div className="flex justify-between">
+              <motion.div className="flex justify-between" 
+                variants={textRevealVariant2} 
+                initial="initial" 
+                animate="animate"
+                transition={{duration: 1, delay: 0 * .4}}
+              >
                 <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Height</span>
                 <span className="text-sm sm:text-base">{pokemon.height / 10} m</span>
-              </div>
-              <div className="flex justify-between">
+              </motion.div>
+              <motion.div className="flex justify-between" 
+                variants={textRevealVariant2} 
+                initial="initial" 
+                animate="animate"
+                transition={{duration: 1, delay: 1 * .4}}
+              >
                 <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Weight</span>
                 <span className="text-sm sm:text-base">{pokemon.weight / 10} kg</span>
-              </div>
-              <div className="flex justify-between">
+              </motion.div>
+              <motion.div className="flex justify-between" 
+                variants={textRevealVariant2} 
+                initial="initial" 
+                animate="animate"
+                transition={{duration: 1, delay: 2 * .4}}
+              >
                 <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Base Experience</span>
                 <span className="text-sm sm:text-base">{pokemon.baseExperience}</span>
-              </div>
+              </motion.div>
             </div>
           </CardContent>
         </motion.div>
@@ -314,7 +372,8 @@ export function PokemonProfileComponent({id}: {id: number}) {
           style={{
             borderColor: getTypeColor(pokemon.types[0]),
           }}
-        >
+        > 
+
           <CardContent className="py-2">
             <div className="flex items-center gap-2 mb-4">
               <Flame color={`${getTypeColor(pokemon.types[0])}`} />
@@ -322,7 +381,15 @@ export function PokemonProfileComponent({id}: {id: number}) {
             </div>
             <div className="flex flex-wrap justify-center gap-2"> {/* Added flex-wrap and justify-center */}
               {pokemon.weaknesses.map((type, index) => (
-                <PokemonTypeIcon key={index} type={type} pageCaller="profile" />
+                <motion.div
+                  variants={textRevealVariant2} 
+                  initial="initial" 
+                  animate="animate"
+                  transition={{duration: 1, delay: index * .4}}
+                  key={index}
+                >
+                  <PokemonTypeIcon type={type} pageCaller="profile" />
+                </motion.div>
               ))}
             </div>
           </CardContent>

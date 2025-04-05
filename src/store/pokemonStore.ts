@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { AxiosResponse } from "axios";
-import { Pokemon } from "@/types/Pokemon"; // Adjust the path
+import { Pokemon } from "@/types/Pokemon";
 import {
   fetchPokemonMainDetails,
   NamedAPIResource,
-} from "@/hooks/useFetchPokemons"; // Adjust the path
+} from "@/hooks/useFetchPokemons"; 
 
 import {axios} from '@/hooks/useFetchPokemons'
 
@@ -37,10 +37,9 @@ export const usePokemonStore = create<PokemonState>((set) => ({
       );
 
       set({ pokemonData: pokemonArray});
-      console.log('fetched');
-      
     } catch (fetchError: unknown) {
-      set({error: new Error('fetching error')})
+      console.log(fetchError);      
+      set({error: new Error()})
     }
   },
   searchResults: [],

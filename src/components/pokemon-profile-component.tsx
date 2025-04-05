@@ -155,7 +155,7 @@ export function PokemonProfileComponent({id}: {id: number}) {
             <div className="flex flex-col items-center mt-4">
               <div className="text-lg tracking-wider text-gray-500 dark:text-gray-400">#{pokemon.id.toString().padStart(3, "0")}</div>
               <h1
-                className="text-4xl font-bold mb-4 capitalize"
+                className="text-4xl font-bold mb-4 capitalize text-center"
                 style={{
                   color: getTypeColor(pokemon.types[0]),
                 }}

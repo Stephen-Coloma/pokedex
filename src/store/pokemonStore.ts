@@ -13,6 +13,7 @@ interface PokemonState {
   fetchPokemon: () => Promise<void>;
   searchResults: Pokemon[];
   setSearchResults: (searchResults: Pokemon[]) => void
+  error: Error | null;
 }
 
 /**
@@ -38,11 +39,11 @@ export const usePokemonStore = create<PokemonState>((set) => ({
       set({ pokemonData: pokemonArray});
       console.log('fetched');
       
-    } catch (error: unknown) {
-      set({pokemonData: []})
-      console.error("Error fetching the data:", error);
+    } catch (fetchError: unknown) {
+      set({error: new Error('fetching error')})
     }
   },
   searchResults: [],
-  setSearchResults: (searchResults: Pokemon[]) => set({searchResults: searchResults})
+  setSearchResults: (searchResults: Pokemon[]) => set({searchResults: searchResults}),
+  error: null,
 }));

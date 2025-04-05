@@ -11,6 +11,7 @@ import { Banner } from "@/components/banner";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useRouter } from "next/navigation";
 import { SearchPokemon } from "@/components/search-pokemon";
+import { CloudOff } from "lucide-react";
 
 export default function Home() {
   const limit = 10;
@@ -19,6 +20,7 @@ export default function Home() {
   const [searchDataLoading, setSearchDataLoading] =  useState<boolean>(false);
   const [visibleCards, setVisibleCards] = useState<Pokemon[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [isFetchError, setIsFetchError] = useState<boolean>(false);
   const router = useRouter();
   
   // fetches data when the user comes from the profile page. it is cached so this is instant.
@@ -56,11 +58,23 @@ export default function Home() {
     setOffset((prev) => prev + limit); //10 + 10;
   };
 
-  const handleSearchPokemon = (searchResults: Pokemon[], isSearching: boolean, isSearchDataLoading: boolean) => {
-    if(isSearchDataLoading){
+  const handleSearchPokemon = (searchResults: Pokemon[], isSearching: boolean, isSearchDataLoading: boolean, isFetchError: boolean) => {
+    //if failed to fetch data
+    if(isFetchError){
+      setIsFetchError(isFetchError);
       setSearchDataLoading(isSearchDataLoading);
+      setIsSearching(isSearching);
+      return;
+    }
+    
+    // if data is still loading
+    if(isSearchDataLoading){
+      setIsFetchError(isFetchError);
+      setSearchDataLoading(isSearchDataLoading);
+      setIsSearching(isSearching);
     }else{
       setSearchDataLoading(isSearchDataLoading);
+      setIsFetchError(isFetchError)
       setOffset(0); //always return offset to zero when searching
       setIsSearching(isSearching);
       setVisibleCards(searchResults);
@@ -72,7 +86,7 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto w-full px-5">
+    <div className="container mx-auto flex flex-col w-full min-h-screen px-5">
       <Header></Header>
       <Separator></Separator>
       <Banner></Banner>
@@ -83,20 +97,28 @@ export default function Home() {
 
       {loading || searchDataLoading ? 
         <div className="flex justify-center py-10 flex-grow">
-        <DotLottieReact
+          <DotLottieReact
             src="https://lottie.host/6b970764-42a6-4f36-9983-2792f3df8edc/bIa223kckN.lottie"
             loop
             autoplay
-            className="w-130"
+            className="w-30"
           />
         </div>
         :
-        <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
-          {visibleCards &&
-            visibleCards.map((pokemon) => (
-              <PokemonCard key={pokemon.id} {...pokemon} onViewProfile={handleViewProfile}/>
-            ))}
-        </div>
+
+        (isFetchError ? 
+          <div className="flex flex-col justify-center items-center gap-2 py-10 flex-grow">
+            <CloudOff size={30}></CloudOff>
+            <h1 className="text-center text-sm md:text-base">Something went wrong. Please refresh the page.</h1>
+          </div>
+          :
+          <div className="w-full h-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
+            {visibleCards &&
+              visibleCards.map((pokemon) => (
+                <PokemonCard key={pokemon.id} {...pokemon} onViewProfile={handleViewProfile}/>
+              ))}
+          </div>
+        )
       }
 
       <div className="py-10 border-t-2">

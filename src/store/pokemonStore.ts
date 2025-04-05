@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { AxiosResponse } from "axios";
-import { Pokemon } from "@/types/Pokemon"; // Adjust the path
+import { Pokemon } from "@/types/Pokemon";
 import {
   fetchPokemonMainDetails,
   NamedAPIResource,
-} from "@/hooks/useFetchPokemons"; // Adjust the path
+} from "@/hooks/useFetchPokemons"; 
 
 import {axios} from '@/hooks/useFetchPokemons'
 
@@ -13,6 +13,7 @@ interface PokemonState {
   fetchPokemon: () => Promise<void>;
   searchResults: Pokemon[];
   setSearchResults: (searchResults: Pokemon[]) => void
+  error: Error | null;
 }
 
 /**
@@ -36,13 +37,12 @@ export const usePokemonStore = create<PokemonState>((set) => ({
       );
 
       set({ pokemonData: pokemonArray});
-      console.log('fetched');
-      
-    } catch (error: unknown) {
-      set({pokemonData: []})
-      console.error("Error fetching the data:", error);
+    } catch (fetchError: unknown) {
+      console.log(fetchError);      
+      set({error: new Error()})
     }
   },
   searchResults: [],
-  setSearchResults: (searchResults: Pokemon[]) => set({searchResults: searchResults})
+  setSearchResults: (searchResults: Pokemon[]) => set({searchResults: searchResults}),
+  error: null,
 }));

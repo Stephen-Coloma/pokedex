@@ -9,14 +9,10 @@ import { useRef, useState } from "react"
 import type { MouseEvent } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { cardVariants } from "@/lib/motion"
 
 export type PokemonCardProps = Pokemon & {
   onViewProfile: (id: number) => void
-}
-
-export const cardVariants = {
-  initial: { opacity: 0, y: 20, scale: 0.9 },
-  animate: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", damping: 15, stiffness: 100 } },
 }
 
 export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCardProps) {
@@ -175,3 +171,5 @@ export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCa
     </motion.div>
   )
 }
+
+export { cardVariants }

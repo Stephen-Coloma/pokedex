@@ -35,7 +35,7 @@ export default function SettingsIsland({onSortChange, onLoadMorecards, isSearchi
       setTimeout(()=>{
         onLoadMorecards(searchResults.slice(offset, offset+limit))
         setLocalLoading(false);
-      }, 500)
+      }, 100)
 
     }else{
       executeGetRequest!();
@@ -66,7 +66,7 @@ export default function SettingsIsland({onSortChange, onLoadMorecards, isSearchi
               size="sm"
               onClick={handleLoadMore}
               disabled={loading}
-              className="ml-auto rounded-full text-xs"
+              className="ml-auto rounded-full text-xs bg-red-500 hover:bg-red-100 text-white hover:text-red-600 hover:border-red-500 hover:border"
             >
               {(loading || localLoading) ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-1" />

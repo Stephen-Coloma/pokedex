@@ -1,10 +1,14 @@
+
+export const POKEMON_BASE_URL = `https://pokeapi.co/api/v2/pokemon`;
+export const POKEMON_SPECIES_URL = `https://pokeapi.co/api/v2/pokemon-species`;
+
 import { PokemonType } from "@/types/Pokemon";
 
 /**
  * This represents the record of the weaknesses of each type of pokemon
  * The reference for this record is based on this link: https://www.eurogamer.net/pokemon-go-type-chart-effectiveness-weaknesses
  */
-const typeWeaknesses: Record<PokemonType, PokemonType[]> = {
+export const typeWeaknesses: Record<PokemonType, PokemonType[]> = {
   normal: ["fighting"],
   fire: ["ground", "rock", "water"],
   water: ["grass", "electric"],
@@ -24,24 +28,3 @@ const typeWeaknesses: Record<PokemonType, PokemonType[]> = {
   steel: ["fighting", "ground", "fire"],
   fairy: ["poison", "steel"],
 };
-
-/**
- * This function returns the weaknesses of the pokemon type/s.
- * It creates a set that will contain the final returned value.
- * It iterates the given type/s of the pokemon, and using the current type, 
- * it retrieves the weaknesses of that current type from the record.
- * 
- * @param types the pokemon type/s 
- * @returns the types where the pokemon is vulnerable to.
- */
-export default function getWeaknesses(types: PokemonType[]): PokemonType[] {
-  const weaknesses = new Set<PokemonType>();
-
-  types.forEach((currentType) => {
-    typeWeaknesses[currentType]?.forEach((weaknessesOfCurrentType) => {
-      weaknesses.add(weaknessesOfCurrentType);
-    });
-  });
-
-  return Array.from(weaknesses);
-}

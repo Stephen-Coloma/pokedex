@@ -6,6 +6,14 @@ type PokemonDetailsPageProps = {
   id: number
 }
 
+export async function generateStaticParams() {
+  const pokemonIds = Array.from({length: 1009}, (_, index) => index + 1)
+ 
+  return pokemonIds.map((id) => ({
+    id: id.toString(),
+  }))
+}
+
 export default async function Pokemon({params}: {params: Promise<PokemonDetailsPageProps>}) {
   const{ id } = await params;
   return(

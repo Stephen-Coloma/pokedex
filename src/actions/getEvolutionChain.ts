@@ -28,24 +28,37 @@ export async function getEvolutionChain(id: number): Promise<EvolutionChain> {
           evolvesTo: []
         }
       } else{
-        const currentPokemon = chainData.species;
-        const pokemonResponse = await axios.get(`${POKEMON_BASE_URL}/${currentPokemon.name}`);
-        const evolvesToPromises = chainData.evolves_to.map(buildEvolutionChain); // Create an array of promises
-        const evolvesTo = await Promise.all(evolvesToPromises); // Await all promises to get the resolved values
+        try{
+          const currentPokemon = chainData.species;
+          const pokemonResponse = await axios.get(`${POKEMON_BASE_URL}/${currentPokemon.name}`);
+          const evolvesToPromises = chainData.evolves_to.map(buildEvolutionChain); // Create an array of promises
+          const evolvesTo = await Promise.all(evolvesToPromises); // Await all promises to get the resolved values
 
-        const evolution: EvolutionChain = {
-          name: currentPokemon.name,
-          photo: getPhotoURL(pokemonResponse.data.id),
-          evolvesTo: evolvesTo, // Use the resolved array of evolution objects
-        };
+          const evolution: EvolutionChain = {
+            name: currentPokemon.name,
+            photo: getPhotoURL(pokemonResponse.data.id),
+            evolvesTo: evolvesTo, // Use the resolved array of evolution objects
+          };
 
-        return evolution;
+          return evolution;
+        }catch(error){
+          console.error('Error fetching evolution chain:', error);
+          return {
+            name: '',
+            photo: '',
+            evolvesTo: []
+          };
+        }
       }
     };
 
     // Return the first evolution chain starting point
     return buildEvolutionChain(chain);
   } catch (error: unknown) {
-    throw error;
+    return {
+      name: '',
+      photo: '',
+      evolvesTo: []
+    };
   }
 }

@@ -18,30 +18,12 @@ import {motion} from 'framer-motion'
 import { cardVariants } from "./pokemon-card";
 import { textRevealVariant1, textRevealVariant2 } from "@/lib/motion";
 
-export function PokemonProfileComponent({id}: {id: number}) {
-  const {status, data, loading} = useFetchPokemonProfile(id)
-  const [pokemon, setPokemon] = useState<PokemonProfile>();
+export function PokemonProfileComponent({pokemon}: {pokemon: PokemonProfile}) {
   const [showAllDescriptions, setShowAllDescriptions] = useState(false);
   const [displayDescriptions , setDisplayDescriptions] = useState<string[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const cardRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(()=>{
-    if(status === 200 && data){
-      setPokemon(data);
-    }
-  }, [loading])
-
-  useEffect(()=>{
-    if(status === 200){
-      if(showAllDescriptions){
-        setDisplayDescriptions(pokemon!.descriptions)
-      }else{
-        setDisplayDescriptions(data!.descriptions.slice(0,3))
-      }
-    }
-  }, [showAllDescriptions, loading])
 
   if(!pokemon) return <PokemonProfileSkeleton></PokemonProfileSkeleton>;
   

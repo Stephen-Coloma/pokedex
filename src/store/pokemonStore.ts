@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import axios from '@/lib/axios'
 import { AxiosResponse } from "axios";
 import { Pokemon } from "@/types/Pokemon";
 import {
@@ -6,7 +7,6 @@ import {
   NamedAPIResource,
 } from "@/hooks/useFetchPokemons"; 
 
-import {axios} from '@/hooks/useFetchPokemons'
 
 interface PokemonState {
   pokemonData: Pokemon[];

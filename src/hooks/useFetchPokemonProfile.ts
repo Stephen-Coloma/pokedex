@@ -1,16 +1,13 @@
 import {
   PokemonAbility,
   PokemonProfile,
-  PokemonStat,
   EvolutionChain,
 } from "@/types/PokemonProfile";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { ApiResponse } from "@/types/ApiResponse";
-import getWeaknesses from "@/lib/getWeaknesses";
-import getPhotoURL from "@/lib/getPhotoURL";
-import { PokemonType } from "@/types/Pokemon";
-import {axios} from "@/hooks/useFetchPokemons";
+import axios from "@/lib/axios";
+import { formatTypes, processStats, getWeaknesses, getPhotoURL } from "@/lib/utils";
 
 /**
  * A custom hook that utilized for fetching compelete pokemon details.
@@ -175,18 +172,6 @@ async function fetchEvolutionChain(id: number): Promise<EvolutionChain> {
 }
 
 /**
- * This function parses the types that comes from the API call to 
- * PokemonType[].
- * 
- * @param types fetch that results from the call to the pokemon endpoint
- * @returns 
- */
-function formatTypes(types: any): PokemonType[] {
-  const formattedTypes: PokemonType[] = types.map((t: { type: { name: string } }) => t.type.name)
-  return formattedTypes;
-}
-
-/**
  * This function fetches the description for the pokemon.
  * 
  * @param id of the pokemon
@@ -207,56 +192,6 @@ async function fetchPokemonDescription(id: number) {
   
     return uniqueDescriptions;
   }catch(error: unknown){
-    throw error;
-  }
-}
-
-/**
- * This function formats the stats from the pokemon endpoint call.
- * This makes it easier to display in UI as unnecessary fields are removed.
- *
- * @param stats that comes from the pokemon endpoint for further preprocesing
- * @returns pokemon stats
- */
-function processStats(stats: any): PokemonStat {
-  try {
-    const pokemonStats: PokemonStat = {
-      hp: 0,
-      attack: 0,
-      defense: 0,
-      specialAttack: 0,
-      specialDefense: 0,
-      speed: 0,
-    };
-
-    // loop each stats
-    stats.forEach((stat: { stat: { name: string }; base_stat: number }) => {
-      switch (stat.stat.name) {
-        case "hp":
-          pokemonStats.hp = stat.base_stat;
-          break;
-        case "attack":
-          pokemonStats.attack = stat.base_stat;
-          break;
-        case "defense":
-          pokemonStats.defense = stat.base_stat;
-          break;
-        case "special-attack":
-          pokemonStats.specialAttack = stat.base_stat;
-          break;
-        case "special-defense":
-          pokemonStats.specialDefense = stat.base_stat;
-          break;
-        case "speed":
-          pokemonStats.speed = stat.base_stat;
-          break;
-        default:
-          console.warn(`Unknown stat name: ${stat.stat.name}`);
-      }
-    });
-
-    return pokemonStats;
-  } catch (error) {
     throw error;
   }
 }

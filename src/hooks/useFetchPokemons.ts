@@ -1,11 +1,9 @@
 import { Pokemon } from "@/types/Pokemon";
-import Axios, { AxiosResponse } from "axios";
-import { setupCache } from "axios-cache-interceptor";
+import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { ApiResponse } from "@/types/ApiResponse";
-import getPhotoURL from "@/lib/getPhotoURL";
-
-export const axios = setupCache(Axios.create());
+import { getPhotoURL } from "@/lib/utils";
+import axios from '@/lib/axios'
 
 /**
  * A type that is matched to the request result of the endpoint:

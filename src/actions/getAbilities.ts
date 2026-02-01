@@ -1,5 +1,5 @@
 import { PokemonAbility } from "@/types/PokemonProfile";
-import { axios } from "@/lib/axios";
+import axios from "@/lib/axios";
 
 /**
  * This function fetches additional details of the abilities that a pokemon possess.

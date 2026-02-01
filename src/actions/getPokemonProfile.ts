@@ -1,5 +1,5 @@
 import { POKEMON_BASE_URL } from "@/lib/constants";
-import { axios } from "@/hooks/useFetchPokemons";
+import axios from "@/lib/axios";
 import { PokemonProfile } from "@/types/PokemonProfile";
 import { getAbilities } from "./getAbilities";
 import { getEvolutionChain } from "./getEvolutionChain";

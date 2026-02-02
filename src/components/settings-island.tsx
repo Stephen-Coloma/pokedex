@@ -1,15 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  Loader2,
-} from "lucide-react";
-
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ModeToggle } from "./mode-toggle";
 import { usePokemonStore } from "@/store/pokemonStore";
+import { SortDropDownMenu } from "./sort-dropdown-menu";
 
 export default function SettingsIsland() {
   const limit = usePokemonStore((state)=> state.limit);
@@ -42,7 +39,7 @@ export default function SettingsIsland() {
         <Card className="w-full max-w-4xl shadow-lg hover:shadow-xl transition-all duration-300 p-2 rounded-full bg-muted">
           <div className="flex flex-wrap items-center justify-between gap-3 md:flex-nowrap">
 
-            {/* <SortDropDownMenu onSortChange={onSortChange}></SortDropDownMenu> */}
+            <SortDropDownMenu ></SortDropDownMenu>
 
             <Separator orientation="vertical" className="h-6 hidden md:block" />
 

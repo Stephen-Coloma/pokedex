@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { usePokemonStore } from "@/store/pokemonStore";
+import { MAX_POKEMON_ID } from "@/lib/constants";
 
 export default function ProfileSettingsIsland({id} : {id: number}) {
   const router = useRouter();
@@ -21,6 +22,10 @@ export default function ProfileSettingsIsland({id} : {id: number}) {
   const setOffset = usePokemonStore((state) => state.setOffset);
 
   const handleClickNextPokemon = () => {
+    if(nextId > MAX_POKEMON_ID){
+      return;
+    }
+
     router.push(`/pokemon/${nextId}`)
   };
   

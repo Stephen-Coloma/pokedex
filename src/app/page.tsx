@@ -1,4 +1,4 @@
-import Test from "@/components/test";
+import HomePage from "@/components/homepage";
 import { POKEMON_BASE_URL } from "@/lib/constants";
 import { getPokemonMainDetails } from "@/actions/getPokemonMainDetails";
 import { Pokemon } from "@/types/Pokemon";
@@ -6,9 +6,12 @@ import { NamedAPIResource } from "@/types/NamedAPIResource";
 
 // Fetch all Pokémon at build time + Incremental Site Regeneration every 15 days
 export const getAllPokemons = async (): Promise<Pokemon[]> => {
-  const response = await fetch(`${POKEMON_BASE_URL}/pokemon?limit=1025&offset=0`, {
-    next: { revalidate: 60 * 60 * 24 * 15 }, // 15 days revalidation
-  });
+  const response = await fetch(
+    `${POKEMON_BASE_URL}?limit=10&offset=0`, 
+    {
+      next: { revalidate: 60 * 60 * 24 * 15 }, // 15 days revalidation
+    }
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch Pokémon list");
@@ -23,10 +26,10 @@ export const getAllPokemons = async (): Promise<Pokemon[]> => {
 };
 
 
-export default async function Home() {
+export default async function App() {
   const pokemons = await getAllPokemons();
 
   return (
-    <Test pokemons={pokemons}></Test>
+    <HomePage initialPokemons={pokemons}></HomePage>  
   );
 }

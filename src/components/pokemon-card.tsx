@@ -1,15 +1,14 @@
-"use client"
+"use client";
 
-import type { Pokemon } from "@/types/Pokemon"
-import { getTypeColor, hexToRgba } from "@/lib/colors"
-import { PokemonTypeIcon } from "./pokemon-type-icon"
-import { Badge } from "./ui/badge"
-import { Sparkles } from "lucide-react"
-import { useRef, useState } from "react"
-import type { MouseEvent } from "react"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { cardVariants } from "@/lib/motion"
+import type { Pokemon } from "@/types/Pokemon";
+import { getTypeColor, hexToRgba } from "@/lib/colors";
+import { PokemonTypeIcon } from "./pokemon-type-icon";
+import { Badge } from "./ui/badge";
+import { useRef, useState } from "react";
+import type { MouseEvent } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { cardVariants } from "@/lib/motion";
 
 export type PokemonCardProps = Pokemon & {
   onViewProfile: (id: number) => void
@@ -21,155 +20,145 @@ export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCa
 
   // Handle mouse move for 3D effect
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!isHovering || !cardRef.current) return
+    if (!isHovering || !cardRef.current) return;
 
-    const card = cardRef.current
-    const rect = card.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+    const card = cardRef.current;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
 
-    const rotateX = (y - centerY) / 10
-    const rotateY = (centerX - x) / 10
+    const rotateX = (y - centerY) / 10;
+    const rotateY = (centerX - x) / 10;
 
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`
-  }
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+  };
 
   const handleMouseLeave = () => {
-    setIsHovering(false)
+    setIsHovering(false);
     if (cardRef.current) {
-      cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)"
+      cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
     }
-  }
+  };
 
   const handleViewProfile = (e: MouseEvent) => {
-    e.stopPropagation()
-    onViewProfile(id)
-  }
+    e.stopPropagation();
+    onViewProfile(id);
+  };
+
+  const primaryType = types[0];
+  const typeColor = getTypeColor(primaryType);
 
   return (
     // main container
     <motion.div
-      className={`border-2 p-0 relative w-full h-[fit] max-w-xs mx-auto rounded-xl bg-muted overflow-hidden`}
       ref={cardRef}
+      className="relative w-full max-w-xs mx-auto cursor-pointer"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{
-        borderColor: getTypeColor(types[0]),
-        backgroundColor:  hexToRgba(getTypeColor(types[0]), 0.2),
-      }}
+      onMouseEnter={() => setIsHovering(true)}
+      onClick={handleViewProfile}
       variants={cardVariants}
       initial="initial"
       animate="animate"
+      style={{
+        transition: "transform 0.1s ease-out",
+      }}
     >
-      {/* Custom shaped card  */}
+      {/* Outer golden border - like real Pokemon cards */}
       <div
-        className={`relative rounded-xl shadow-lg`}
+        className="p-[6px] rounded-2xl"
         style={{
-          clipPath:
-            "polygon(0% 0%, 100% 0%, 100% 20%, 90% 25%, 90% 75%, 100% 80%, 100% 100%, 0% 100%, 0% 80%, 10% 75%, 10% 25%, 0% 20%)",
+          background:
+            "linear-gradient(135deg, #f4c430 0%, #d4af37 50%, #f4c430 100%)",
+          boxShadow:
+            "0 8px 16px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.1)",
         }}
       >
-        {/* Holder for pokeball bg */}
-        <div
-          className="relative"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
-          {/* Card header */}
-          <div className="pt-4 px-2 sm:px-4 relative">
-            <div className="flex justify-between items-center">
-            <div className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
-              <h3 className="text-sm sm:text-base md:text-sm font-medium text-primary capitalize tracking-wide">
+        {/* Inner card container */}
+        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl overflow-hidden shadow-lg">
+          {/* Header section with colored background */}
+          <div
+            className="pt-4 px-4 pb-2"
+            style={{
+              background: `linear-gradient(to bottom, ${hexToRgba(typeColor, 0.15)}, transparent)`,
+            }}
+          >
+            <div className="flex justify-between items-center mb-1">
+              <h3 className="text-lg font-bold text-foreground capitalize tracking-wide">
                 {name}
               </h3>
-            </div>
-              <Badge className="text-white bg-primary/30 rounded-full px-1 sm:px-2 sm:py-1 text-xs font-light tracking-wider">
-                # {id.toString().padStart(3, "0")}
+              <Badge
+                variant="secondary"
+                className="font-mono text-xs px-2 py-0.5"
+                style={{
+                  backgroundColor: hexToRgba(typeColor, 0.2),
+                  borderColor: typeColor,
+                  borderWidth: "1px",
+                }}
+              >
+                #{id.toString().padStart(3, "0")}
               </Badge>
             </div>
           </div>
 
-          {/* Card image area */}
-          <div className={`mx-4 flex justify-center items-center relative`}>
-            <div className="relative w-full h-full flex justify-center items-center p-4">
-              {/* Circular glow behind image */}
-              <div
-                className={`absolute rounded-full blur-md transition-all duration-300 ${isHovering ? `scale-105 opacity-70` : "scale-90 opacity-30"}`}
-                style={{
-                  backgroundColor: isHovering ? getTypeColor(types[0]) : "",
-                  width: "50%",
-                  height: "50%",
-                  boxShadow: isHovering ? `0 0 10px 20px rgba(255, 255, 255, .3)` : "none",
-                }}
-              />
+          {/* Pokemon Image Section */}
+          <div className="relative px-6 py-4 flex justify-center items-center">
+            {/* Subtle circular background */}
+            <div
+              className="absolute w-32 h-32 rounded-full opacity-10"
+              style={{
+                backgroundColor: typeColor,
+              }}
+            />
 
-              {/* Pokemon image with pop-up effect */}
-              <div className="relative z-10">
+            {/* Pokemon image */}
+            <div className="relative z-10">
               <Image
                 src={photo || "/placeholder.svg"}
                 alt={name}
-                width={200}
-                height={200}
+                width={180}
+                height={180}
                 priority
-                className={`h-full transition-all duration-300 ${isHovering ? "scale-110 drop-shadow-2xl" : "scale-100"}`}
+                className="drop-shadow-lg transition-transform duration-300"
+                style={{
+                  transform: isHovering ? "scale(1.05)" : "scale(1)",
+                }}
               />
-
-              {/* Shiny sparkle effects that appear on hover */}
-              {isHovering && (
-                <>
-                  <Sparkles
-                    className="absolute text-yellow-300 w-7 h-7 animate-pulse z-10"
-                    style={{ top: "-10%", left: "20%" }}
-                  />
-                  <Sparkles
-                    className="absolute text-yellow-300 w-10 h-10 animate-pulse z-10"
-                    style={{ top: "30%", right: "10%" }}
-                  />
-                  <Sparkles
-                    className="absolute text-yellow-300 w-5 h-5 animate-pulse z-10"
-                    style={{ bottom: "0%", left: "10%" }}
-                  />
-
-                  {/* Shine overlay effect */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white to-transparent opacity-0 animate-shine"></div>
-                </>
-              )}
-              </div>
-
             </div>
           </div>
 
-          {/* Card footer */}
-          <div className="flex px-6 pb-4 flex justify-center items-center gap-2">
-            {types.map((type, index) => (
-              <PokemonTypeIcon key={index} type={type} pageCaller="homepage"></PokemonTypeIcon>
-            ))}
+          {/* Type badges section */}
+          <div
+            className="px-4 pt-2 pb-3 border-t-2"
+            style={{
+              borderColor: hexToRgba(typeColor, 0.3),
+            }}
+          >
+            <div className="flex justify-center items-center gap-2 py-1">
+              {types.map((type, index) => (
+                <PokemonTypeIcon
+                  key={index}
+                  type={type}
+                  pageCaller="homepage"
+                />
+              ))}
+            </div>
           </div>
 
-          {/* Glowing border effect on hover */}
+          {/* Bottom decorative strip */}
           <div
-            className={`absolute inset-0 pointer-events-none transition-opacity duration-500 z-10 ${
-              isHovering ? "opacity-100" : "opacity-0"
-            }`}
+            className="h-2"
             style={{
-              boxShadow: `inset 0 0 20px 5px ${getTypeColor(types[0])}`,
-              borderRadius: "inherit",
+              background: `linear-gradient(90deg, transparent, ${hexToRgba(typeColor, 0.4)}, transparent)`,
             }}
-          />
-
-          {/* Clickable area */}
-          <div
-            className={`absolute inset-0 cursor-pointer z-20 ${isHovering ? "block" : "hidden"}`}
-            onClick={handleViewProfile}
-            aria-label={`View ${name}'s profile`}
           />
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
 
-export { cardVariants }
+export { cardVariants };

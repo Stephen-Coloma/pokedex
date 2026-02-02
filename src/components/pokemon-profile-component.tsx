@@ -69,7 +69,7 @@ export function PokemonProfileComponent({pokemon}: {pokemon: PokemonProfile}) {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Header Card - Name, ID, Photo */}
       <motion.div
-        className={`col-span-1 md:col-span-3 overflow-hidden shadow-md border-4 bg-card text-card-foreground rounded-xl py-6`}
+        className={`col-span-1 md:col-span-3 overflow-hidden shadow-md border-4 bg-card text-card-foreground rounded-xl py-6 border-4`}
         style={{
           borderColor: getTypeColor(pokemon.types[0]),
           backgroundColor:  hexToRgba(getTypeColor(pokemon.types[0]), 0.3),
@@ -193,7 +193,7 @@ export function PokemonProfileComponent({pokemon}: {pokemon: PokemonProfile}) {
       {/* Left Column */}
       <div className="col-span-1 md:col-span-2 space-y-6">
         {/* Description Card */}
-        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6`}
+        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 border-4`}
           style={{
             borderColor: getTypeColor(pokemon.types[0])
           }}
@@ -256,7 +256,7 @@ export function PokemonProfileComponent({pokemon}: {pokemon: PokemonProfile}) {
         </motion.div>
 
         {/* Abilities Card */}
-        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6`}
+        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 border-4`}
           variants={cardVariants}
           initial="initial"
           animate="animate"
@@ -303,7 +303,7 @@ export function PokemonProfileComponent({pokemon}: {pokemon: PokemonProfile}) {
       {/* Right Column */}
       <div className="col-span-1 space-y-6">
         {/* Basic Info Card */}
-        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6`}
+        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 border-4`}
           variants={cardVariants}
           initial="initial"
           animate="animate"
@@ -350,7 +350,7 @@ export function PokemonProfileComponent({pokemon}: {pokemon: PokemonProfile}) {
 
         {/* Weaknesses Card */}
         <motion.div
-          className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6`}
+          className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 border-4`}
           variants={cardVariants}
           initial="initial"
           animate="animate"
@@ -381,7 +381,7 @@ export function PokemonProfileComponent({pokemon}: {pokemon: PokemonProfile}) {
         </motion.div>
 
         {/* Evolution Chain Card */}
-        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6`}
+        <motion.div className={`overflow-hidden shadow-md border-2 bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 border-4`}
           variants={cardVariants}
           initial="initial"
           animate="animate"

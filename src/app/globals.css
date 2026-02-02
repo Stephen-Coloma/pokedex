@@ -183,3 +183,19 @@ body {
 .animate-spin-slow {
   animation: spin-slow 3s linear infinite;
 }
+
+/* Pixelated Icons - Make Lucide icons match the retro pixel theme */
+svg {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  shape-rendering: crispEdges;
+}
+
+/* Optional: Add slight pixelation effect for more retro feel */
+button svg,
+a svg,
+.lucide {
+  filter: contrast(1.4);
+  stroke-width: 3;
+}

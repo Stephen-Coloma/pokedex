@@ -1,3 +1,5 @@
+import { PokemonType } from "./PokemonType";
+
 /**
  * Represents a Pokémon entity with basic details.
  * id - unique identifier of the pokemin
@@ -11,26 +13,3 @@ export interface Pokemon {
   photo: string;
   types: PokemonType[];
 }
-
-/**
- * Type representing all possible Pokémon types. A total of 18 types are present
- */
-export type PokemonType =
-  | "normal"
-  | "fire"
-  | "water"
-  | "electric"
-  | "grass"
-  | "ice"
-  | "fighting"
-  | "poison"
-  | "ground"
-  | "flying"
-  | "psychic"
-  | "bug"
-  | "rock"
-  | "ghost"
-  | "dragon"
-  | "dark"
-  | "steel"
-  | "fairy";

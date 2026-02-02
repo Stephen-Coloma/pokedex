@@ -1,11 +1,13 @@
 "use client";
 
-import { House, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { usePokemonStore } from "@/store/pokemonStore";
+import { MAX_POKEMON_ID } from "@/lib/constants";
 
 export default function ProfileSettingsIsland({id} : {id: number}) {
   const router = useRouter();
@@ -13,16 +15,32 @@ export default function ProfileSettingsIsland({id} : {id: number}) {
   const prevId = parseInt(id.toString()) - 1;
   const [isHoveringNext, setIsHoveringNext] = useState(false);
   const [isHoveringPrev, setIsHoveringPrev] = useState(false);
+  const setIsInSearchingState = usePokemonStore((state) => state.setInSearchingState);
+  const setIsSearching = usePokemonStore((state) => state.setIsSearching);
+  const pokemons = usePokemonStore((state) => state.pokemons);
+  const setDisplayedPokemons = usePokemonStore((state) => state.setDisplayedPokemons);
+  const setOffset = usePokemonStore((state) => state.setOffset);
 
   const handleClickNextPokemon = () => {
+    if(nextId > MAX_POKEMON_ID){
+      return;
+    }
+
     router.push(`/pokemon/${nextId}`)
   };
   
   const handleClickPrevPokemon = () => {
+    if(prevId < 1){
+      return;
+    }
     router.push(`/pokemon/${prevId}`)
   };
 
   const handleClickHome = () => {
+    setDisplayedPokemons(pokemons.slice(0, 10));
+    setOffset(10);
+    setIsInSearchingState(false);
+    setIsSearching(false);
     router.push(`/`);
   };
 
@@ -63,7 +81,7 @@ export default function ProfileSettingsIsland({id} : {id: number}) {
               onClick={handleClickHome}
               className="ml-auto rounded-full text-xs bg-red-500 hover:bg-red-100 text-white hover:text-red-600 hover:border-red-500 hover:border"
             >
-              <House></House>
+              Home
             </Button>
 
             <Separator orientation="vertical" className="h-6 hidden md:block" />

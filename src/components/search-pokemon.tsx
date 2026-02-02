@@ -5,57 +5,54 @@ import { Input } from "./ui/input";
 import { Pokemon } from "@/types/Pokemon";
 import { usePokemonStore } from "@/store/pokemonStore";
 
-type PokemonSearchComponentProps = {
-  onSearchPokemon: (searchPokemons: Pokemon[], isSearching: boolean, isSearchDataLoading: boolean, isFetchError: boolean) => void;
-};
-
-export function SearchPokemon({ onSearchPokemon }: PokemonSearchComponentProps) {
-  const pokemonData = usePokemonStore((state) => state.pokemonData);
-  const fetchPokemon = usePokemonStore((state) => state.fetchPokemon);
-  const setSearchResults = usePokemonStore((state) => state.setSearchResults);
-  const fetchError = usePokemonStore((state) => state.error);
-
-    // trigger fetching the all pokemon when search bar mounts
-    useEffect(() => {
-      fetchPokemon();
-    }, [fetchPokemon]);
+export function SearchPokemon() {
+  const pokemon = usePokemonStore((state) => state.pokemons);
+  const setSearchResults = usePokemonStore((state) => state.setSearchedResults);
+  const setDisplayedPokemons = usePokemonStore((state) => state.setDisplayedPokemons);
+  const setIsSearching = usePokemonStore((state) => state.setIsSearching);
+  const setInSearchingState = usePokemonStore((state) => state.setInSearchingState);
+  const setOffset = usePokemonStore((state) => state.setOffset);
 
   // Use useMemo to debounce the search to prevent multiple call request per user type.
   const debouncedResults = useMemo(
     () =>
-      debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-        const term = e.target.value.toLowerCase();
+      debounce(
+        async (e: React.ChangeEvent<HTMLInputElement>) => {
+          const term = e.target.value.toLowerCase();
 
-        if(fetchError){
-          return onSearchPokemon([], true, false, true);
-        }
+          if(term.length > 1) {
+            setInSearchingState(true);
+            setIsSearching(true);
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            setIsSearching(false);
+          }
 
-        //empty pokemon Data - not yet fetched
-        if(pokemonData.length === 0){
-          return onSearchPokemon([], true, true, false);
-        }
+          if (!term && pokemon) {
+            const resetData = pokemon.slice(0, 10);
+            setDisplayedPokemons(resetData);
+            setInSearchingState(false);
+            setOffset(10);
+            return;
+          }
 
-        if (!term && pokemonData) {
-          const resetData = pokemonData.slice(0, 10);
-          onSearchPokemon(resetData, false, false, false);
-          return;
-        }
-
-        //store the search results on the global store so that island settings will have access to it.
-        let tempSearchResults: Pokemon[] = [];
-        if (/[0123456789]/.test(term)) { 
-          // id searching
-          tempSearchResults = pokemonData.filter((pokemon) => pokemon.id.toString().includes(term));
-          setSearchResults(tempSearchResults);
-        } else { 
-          // name searching
-          tempSearchResults = pokemonData.filter((pokemon) => pokemon.name.includes(term));
-          setSearchResults(tempSearchResults);
-        }
-        onSearchPokemon(tempSearchResults.slice(0, 10), true, false, false);
+          //store the search results on the global store so that island settings will have access to it.
+          let tempSearchResults: Pokemon[] = [];
+          if (/[0123456789]/.test(term)) { 
+            // id searching
+            tempSearchResults = pokemon.filter((pokemon) => pokemon.id.toString().includes(term));
+            setSearchResults(tempSearchResults);
+            setDisplayedPokemons(tempSearchResults.slice(0, 10));
+            setOffset(10);
+          } else { 
+            // name searching
+            tempSearchResults = pokemon.filter((pokemon) => pokemon.name.includes(term));
+            setSearchResults(tempSearchResults);
+            setDisplayedPokemons(tempSearchResults.slice(0, 10));
+            setOffset(10);
+          }
       }, 300), // 300ms debounce delay
 
-    [pokemonData, onSearchPokemon] 
+    [pokemon, setSearchResults] 
   );
 
   useEffect(() => {

@@ -1,11 +1,12 @@
 "use client";
 
-import { House, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { usePokemonStore } from "@/store/pokemonStore";
 
 export default function ProfileSettingsIsland({id} : {id: number}) {
   const router = useRouter();
@@ -13,6 +14,11 @@ export default function ProfileSettingsIsland({id} : {id: number}) {
   const prevId = parseInt(id.toString()) - 1;
   const [isHoveringNext, setIsHoveringNext] = useState(false);
   const [isHoveringPrev, setIsHoveringPrev] = useState(false);
+  const setIsInSearchingState = usePokemonStore((state) => state.setInSearchingState);
+  const setIsSearching = usePokemonStore((state) => state.setIsSearching);
+  const pokemons = usePokemonStore((state) => state.pokemons);
+  const setDisplayedPokemons = usePokemonStore((state) => state.setDisplayedPokemons);
+  const setOffset = usePokemonStore((state) => state.setOffset);
 
   const handleClickNextPokemon = () => {
     router.push(`/pokemon/${nextId}`)
@@ -26,6 +32,10 @@ export default function ProfileSettingsIsland({id} : {id: number}) {
   };
 
   const handleClickHome = () => {
+    setDisplayedPokemons(pokemons.slice(0, 10));
+    setOffset(10);
+    setIsInSearchingState(false);
+    setIsSearching(false);
     router.push(`/`);
   };
 

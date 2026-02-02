@@ -19,9 +19,7 @@ type HomePageProps = {
 
 export default function HomePage({ initialPokemons }: HomePageProps) {
   const setPokemons = usePokemonStore((state) => state.setPokemons);
-  const setDisplayedPokemons = usePokemonStore(
-    (state) => state.setDisplayedPokemons,
-  );
+  const setDisplayedPokemons = usePokemonStore((state) => state.setDisplayedPokemons);
   const isLoadingMore = usePokemonStore((state) => state.isLoadingMore);
   const isSearching = usePokemonStore((state) => state.isSearching);
   const setOffset = usePokemonStore((state) => state.setOffset);

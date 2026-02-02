@@ -1,10 +1,9 @@
 'use client'
 
-import { useFetchPokemonProfile } from "@/hooks/useFetchPokemonProfile";
 import { Button } from "./ui/button";
 import { getTypeColor, hexToRgba} from "@/lib/colors";
 import { BookOpen, ChevronUp, ChevronDown, Zap, Info, Flame, GitBranch, MousePointerClick, Sparkles, Volume2,} from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { CardContent } from "./ui/card";
 import Image from "next/image"
 import { PokemonProfile } from "@/types/PokemonProfile";
@@ -13,19 +12,16 @@ import { EvolutionChainCard } from "./evolution-chain-card";
 import { StatsChart } from "./stats-chart";
 import ProfileSettingsIsland from "./profile-settings-island";
 import type { MouseEvent } from "react"
-import { PokemonProfileSkeleton } from "./pokemon-profile-skeleton";
 import {motion} from 'framer-motion'
 import { cardVariants } from "./pokemon-card";
 import { textRevealVariant1, textRevealVariant2 } from "@/lib/motion";
 
 export function PokemonProfileComponent({pokemon}: {pokemon: PokemonProfile}) {
-  const [showAllDescriptions, setShowAllDescriptions] = useState(false);
-  const [displayDescriptions , setDisplayDescriptions] = useState<string[]>([]);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [descriptions , setDescriptions] = useState<string[]>(pokemon.descriptions.slice(0, 3)); 
+  const [isShowAllDescription, setIsShowAllDescription] = useState<boolean>(false);
   const [isHovering, setIsHovering] = useState<boolean>(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null)
-
-  if(!pokemon) return <PokemonProfileSkeleton></PokemonProfileSkeleton>;
   
   // Prepare stats data for radar chart
   const statsData = [
@@ -45,29 +41,29 @@ export function PokemonProfileComponent({pokemon}: {pokemon: PokemonProfile}) {
   };
   
   // Handle mouse move for 3D effect
-    const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-      if (!isHovering || !cardRef.current) return
-  
-      const card = cardRef.current
-      const rect = card.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-  
-      const centerX = rect.width / 2
-      const centerY = rect.height / 2
-  
-      const rotateX = (y - centerY) / 75
-      const rotateY = (centerX - x) / 75
-  
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
-    }
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!isHovering || !cardRef.current) return
 
-    const handleMouseLeave = () => {
-      setIsHovering(false)
-      if (cardRef.current) {
-        cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)"
-      }
+    const card = cardRef.current
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+
+    const rotateX = (y - centerY) / 75
+    const rotateY = (centerX - x) / 75
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovering(false)
+    if (cardRef.current) {
+      cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)"
     }
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -211,7 +207,7 @@ export function PokemonProfileComponent({pokemon}: {pokemon: PokemonProfile}) {
               <h2 className="text-xl font-semibold">Description</h2>
             </div>
             <div className="space-y-3">
-              {displayDescriptions.map((desc, index) => (
+              {descriptions.map((desc, index) => (
                 <div key={index} className="flex text-gray-700 dark:text-gray-300">
                   <span className=" text-xs sm:text-sm md:text-base inline-block w-15 flex-shrink-0 font-medium"
                     style={{
@@ -229,15 +225,22 @@ export function PokemonProfileComponent({pokemon}: {pokemon: PokemonProfile}) {
                   </motion.p>
                 </div>
               ))}
-              {pokemon.descriptions.length > 4 && (
+              {pokemon.descriptions.length > 3 && (
                 <Button
-                  onClick={() => setShowAllDescriptions(!showAllDescriptions)}
+                  onClick={() => {
+                    if (isShowAllDescription) {
+                      setDescriptions(pokemon.descriptions.slice(0, 3));
+                    } else {
+                      setDescriptions(pokemon.descriptions);
+                    }
+                    setIsShowAllDescription(!isShowAllDescription);
+                  }}
                   className="flex items-center gap-1 mt-2 text-xs sm:text-sm md:text-base"
                   style={{
                     backgroundColor: getTypeColor(pokemon.types[0])
                   }}
                 >
-                  {showAllDescriptions ? (
+                  {isShowAllDescription ? (
                     <>
                       Show Less <ChevronUp size={16} />
                     </>

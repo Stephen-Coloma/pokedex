@@ -7,7 +7,7 @@ import { NamedAPIResource } from "@/types/NamedAPIResource";
 // Fetch all Pokémon at build time + Incremental Site Regeneration every 15 days
 export const getAllPokemons = async (): Promise<Pokemon[]> => {
   const response = await fetch(
-    `${POKEMON_BASE_URL}?limit=1025&offset=0`, 
+    `${POKEMON_BASE_URL}?limit=100&offset=0`, 
     {
       next: { revalidate: 60 * 60 * 24 * 15 }, // 15 days revalidation
     }

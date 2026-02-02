@@ -18,12 +18,14 @@ export function SearchPokemon() {
     () =>
       debounce(
         async (e: React.ChangeEvent<HTMLInputElement>) => {
-          setInSearchingState(true);
-          setIsSearching(true);
-          await new Promise((resolve) => setTimeout(resolve, 500));
-          setIsSearching(false);
-
           const term = e.target.value.toLowerCase();
+
+          if(term.length > 1) {
+            setInSearchingState(true);
+            setIsSearching(true);
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            setIsSearching(false);
+          }
 
           if (!term && pokemon) {
             const resetData = pokemon.slice(0, 10);

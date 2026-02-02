@@ -19,6 +19,9 @@ export default function ProfileSettingsIsland({id} : {id: number}) {
   };
   
   const handleClickPrevPokemon = () => {
+    if(prevId < 1){
+      return;
+    }
     router.push(`/pokemon/${prevId}`)
   };
 
@@ -63,7 +66,7 @@ export default function ProfileSettingsIsland({id} : {id: number}) {
               onClick={handleClickHome}
               className="ml-auto rounded-full text-xs bg-red-500 hover:bg-red-100 text-white hover:text-red-600 hover:border-red-500 hover:border"
             >
-              <House></House>
+              Home
             </Button>
 
             <Separator orientation="vertical" className="h-6 hidden md:block" />

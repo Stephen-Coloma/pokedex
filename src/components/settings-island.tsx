@@ -13,15 +13,15 @@ export default function SettingsIsland() {
   const offset = usePokemonStore((state)=> state.offset);
   const pokemons = usePokemonStore((state)=> state.pokemons);
   const setOffset = usePokemonStore((state)=> state.setOffset);
-  const searchResults = usePokemonStore((state)=> state.searchedResults);
   const isLoadingMore = usePokemonStore((state)=> state.isLoadingMore);
+  const searchResults = usePokemonStore((state)=> state.searchedResults);
   const setIsLoadingMore = usePokemonStore((state)=> state.setIsLoadingMore);
   const isInSearchingState = usePokemonStore((state)=> state.inSearchingState);
   const setDisplayedPokemons = usePokemonStore((state)=> state.setDisplayedPokemons);
 
   const handleLoadMore = async () => {
     setIsLoadingMore(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     setIsLoadingMore(false);
 
     if(isInSearchingState){ //if on searching state, loading more means loading from the searched results 

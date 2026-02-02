@@ -5,27 +5,7 @@ import { ApiResponse } from "@/types/ApiResponse";
 import { getPhotoURL } from "@/lib/utils";
 import { POKEMON_BASE_URL } from "@/lib/constants";
 import axios from '@/lib/axios'
-
-/**
- * A type that is matched to the request result of the endpoint:
- * https://pokeapi.co/api/v2/{endpoint}/
- * to better manage types.
- */
-export type NamedAPIResourceList = {
-  count: number;
-  next: string;
-  previous: string;
-  results: NamedAPIResource[];
-};
-
-/**
- * A type that is matched to the type of "results" in NamedAPIResourceList that is based on
- * the same api endpoint.
- */
-export type NamedAPIResource = {
-  name: string;
-  url: string;
-};
+import { NamedAPIResource } from '@/types/NamedAPIResource'
 
 /**
  * A custom hook that utilized for fetching pokemon array for the homepage.

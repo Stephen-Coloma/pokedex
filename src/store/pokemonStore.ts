@@ -5,8 +5,8 @@ import { Pokemon } from "@/types/Pokemon";
 import { POKEMON_BASE_URL } from "@/lib/constants";
 import {
   fetchPokemonMainDetails,
-  NamedAPIResource,
 } from "@/hooks/useFetchPokemons"; 
+import { NamedAPIResource } from "@/types/NamedAPIResource";
 
 
 interface PokemonState {

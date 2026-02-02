@@ -2,6 +2,7 @@ import { create } from "zustand";
 import axios from '@/lib/axios'
 import { AxiosResponse } from "axios";
 import { Pokemon } from "@/types/Pokemon";
+import { POKEMON_BASE_URL } from "@/lib/constants";
 import {
   fetchPokemonMainDetails,
   NamedAPIResource,
@@ -29,7 +30,7 @@ export const usePokemonStore = create<PokemonState>((set) => ({
   fetchPokemon: async () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const url = "https://pokeapi.co/api/v2/pokemon/?limit=1025&offset=0";
+      const url = `${POKEMON_BASE_URL}/?limit=1025&offset=0`;
       const response: AxiosResponse = await axios.get(url);
 
       const pokemonArray = await fetchPokemonMainDetails(

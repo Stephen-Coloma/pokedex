@@ -1,6 +1,6 @@
 import { POKEMON_BASE_URL, POKEMON_SPECIES_URL } from "@/lib/constants";
 import { getPhotoURL } from "@/lib/utils";
-import { EvolutionChain } from "@/types/PokemonProfile";
+import { EvolutionChain } from "@/types/EvolutionChain";
 import axios from "axios";
 
 /**

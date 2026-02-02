@@ -1,4 +1,4 @@
-import { PokemonType } from "@/types/Pokemon";
+import { PokemonType } from "@/types/PokemonType";
 
 //Type mapping for pokemon type
 const typeColors: Record<PokemonType, string> = {
@@ -19,10 +19,10 @@ const typeColors: Record<PokemonType, string> = {
   dragon: "#6F35FC",
   dark: "#705746",
   steel: "#B7B7CE",
-  fairy: "#D685AD"
+  fairy: "#D685AD",
 };
 
-export function getTypeColor(type: PokemonType): string{
+export function getTypeColor(type: PokemonType): string {
   return typeColors[type];
 }
 
@@ -32,4 +32,4 @@ export function hexToRgba(hex: string, opacity: number): string {
   const g = parseInt(hex.substring(2, 4), 16);
   const b = parseInt(hex.substring(4, 6), 16);
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-};
+}

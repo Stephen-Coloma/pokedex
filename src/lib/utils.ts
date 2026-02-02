@@ -1,20 +1,20 @@
-import { PokemonType } from "@/types/Pokemon";
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { PokemonType } from "@/types/PokemonType";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 import { typeWeaknesses } from "./constants";
-import { PokemonStat } from "@/types/PokemonProfile";
+import { PokemonStat } from "@/types/PokemonStat";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 /**
  * This function returns the weaknesses of the pokemon type/s.
  * It creates a set that will contain the final returned value.
- * It iterates the given type/s of the pokemon, and using the current type, 
+ * It iterates the given type/s of the pokemon, and using the current type,
  * it retrieves the weaknesses of that current type from the record.
- * 
- * @param types the pokemon type/s 
+ *
+ * @param types the pokemon type/s
  * @returns the types where the pokemon is vulnerable to.
  */
 export function getWeaknesses(types: PokemonType[]): PokemonType[] {
@@ -35,34 +35,35 @@ export function getWeaknesses(types: PokemonType[]): PokemonType[] {
  * 1. 1 digit - add two zeros as start padding.
  * 2. 2 digit - add one zero as start padding.
  * 3. 3 digit or more - retains the id.
- * 
+ *
  * @param id pokemon id
  * @returns formatted photo url for displaying.
  */
 export function getPhotoURL(id: number): string {
-	let formattedId = '';
+  let formattedId = "";
   if (id < 10) {
-		formattedId = id.toString().padStart(3, '0');
+    formattedId = id.toString().padStart(3, "0");
   } else if (id < 100) {
-    formattedId = id.toString().padStart(3, '0');
+    formattedId = id.toString().padStart(3, "0");
   } else {
     formattedId = id.toString();
   }
-	return `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${formattedId}.png`
+  return `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${formattedId}.png`;
 }
 
 /**
- * This function parses the types that comes from the API call to 
+ * This function parses the types that comes from the API call to
  * PokemonType[].
- * 
+ *
  * @param types fetch that results from the call to the pokemon endpoint
- * @returns 
+ * @returns
  */
 export function formatTypes(types: any): PokemonType[] {
-  const formattedTypes: PokemonType[] = types.map((t: { type: { name: string } }) => t.type.name)
+  const formattedTypes: PokemonType[] = types.map(
+    (t: { type: { name: string } }) => t.type.name,
+  );
   return formattedTypes;
 }
-
 
 /**
  * This function formats the stats from the pokemon endpoint call.

@@ -1,4 +1,8 @@
-import { Pokemon, PokemonType } from "./Pokemon";
+import { Pokemon } from "./Pokemon";
+import { PokemonType } from "./PokemonType";
+import { EvolutionChain } from "./EvolutionChain";
+import { PokemonAbility } from "./PokemonAbility";
+import { PokemonStat } from "./PokemonStat";
 
 /**
  * Represents detailed information about a Pokémon
@@ -14,39 +18,9 @@ export interface PokemonProfile extends Pokemon {
   weight: number;
   descriptions: string[];
   baseExperience: number;
-  abilities: PokemonAbility[],
-  cry: string,
-  stats: PokemonStat,
-  weaknesses: PokemonType[],
+  abilities: PokemonAbility[];
+  cry: string;
+  stats: PokemonStat;
+  weaknesses: PokemonType[];
   evolutionChain?: EvolutionChain;
 }
-
-/**
- * Type that represents the evolution chain of the pokemon
- */
-export type EvolutionChain = {
-  name: string,
-  photo: string,
-  evolvesTo: EvolutionChain[],
-};
-
-/**
- * Represents a Pokémon's ability
- * effect - description of the ability
- */
-export type PokemonAbility = {
-  name: string;
-  effect: string; 
-};
-
-/**
- * Represents the Pokémon's base stats.
- */
-export type PokemonStat = {
-  hp: number,
-  attack: number,
-  defense: number,
-  specialAttack: number,
-  specialDefense: number,
-  speed: number
-};

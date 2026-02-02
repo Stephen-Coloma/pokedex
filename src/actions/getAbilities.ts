@@ -1,4 +1,4 @@
-import { PokemonAbility } from "@/types/PokemonProfile";
+import { PokemonAbility } from "@/types/PokemonAbility";
 import axios from "@/lib/axios";
 
 /**

@@ -3,6 +3,7 @@ import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { ApiResponse } from "@/types/ApiResponse";
 import { getPhotoURL } from "@/lib/utils";
+import { POKEMON_BASE_URL } from "@/lib/constants";
 import axios from '@/lib/axios'
 
 /**
@@ -32,7 +33,7 @@ export type NamedAPIResource = {
  * managing errors and loading states in UI.
  */
 export function useFetchPokemons(limit: number, offset: number, autoFetch: boolean = true): ApiResponse<Pokemon[]> {
-  const url = `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`
+  const url = `${POKEMON_BASE_URL}/?limit=${limit}&offset=${offset}`
   const [status, setStatus] = useState<number>(0);
   const [statusText, setStatusText] = useState<string>("");
   const [data, setData] = useState<Pokemon[] | null>(null);

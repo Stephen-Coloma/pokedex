@@ -1,7 +1,7 @@
 import { Header } from "@/components/header";
-import { PokemonProfileComponent } from "@/components/pokemon-profile-component";
 import { Separator } from "@/components/ui/separator";
 import { getPokemonProfile } from "@/actions/getPokemonProfile";
+import { PokemonProfileComponent } from "@/components/pokemon-profile-component";
 
 export async function generateStaticParams() {
   const pokemonIds = Array.from({length: 1009}, (_, index) => index + 1)

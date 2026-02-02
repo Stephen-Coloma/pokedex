@@ -1,8 +1,8 @@
+import { Pokemon } from "@/types/Pokemon";
 import HomePage from "@/components/homepage";
 import { POKEMON_BASE_URL } from "@/lib/constants";
-import { getPokemonMainDetails } from "@/actions/getPokemonMainDetails";
-import { Pokemon } from "@/types/Pokemon";
 import { NamedAPIResource } from "@/types/NamedAPIResource";
+import { getPokemonMainDetails } from "@/actions/getPokemonMainDetails";
 
 // Fetch all Pokémon at build time + Incremental Site Regeneration every 15 days
 export const getAllPokemons = async (): Promise<Pokemon[]> => {

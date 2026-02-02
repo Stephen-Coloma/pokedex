@@ -1,7 +1,7 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import localFont from 'next/font/local';
 import { ThemeProvider } from "@/components/theme-provider";
-import "./globals.css";
 
 // Font files can be colocated inside of `app`
 const monocraft = localFont({

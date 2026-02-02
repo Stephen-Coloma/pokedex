@@ -8,45 +8,33 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { SortDropDownMenu } from "./sort-dropdown-menu";
 import { ModeToggle } from "./mode-toggle";
-import { Pokemon } from "@/types/Pokemon";
-import { useFetchPokemons } from "@/hooks/useFetchPokemons";
 import { usePokemonStore } from "@/store/pokemonStore";
 
-type SettingsIslandProps = {
-  onSortChange: (sortOption: string) => void;
-  onLoadMorecards: (loadedCards: Pokemon[]) => void;
-  isSearching: boolean,
-  limit: number,
-  offset: number
-}
+export default function SettingsIsland() {
+  const limit = usePokemonStore((state)=> state.limit);
+  const offset = usePokemonStore((state)=> state.offset);
+  const pokemons = usePokemonStore((state)=> state.pokemons);
+  const setOffset = usePokemonStore((state)=> state.setOffset);
+  const searchResults = usePokemonStore((state)=> state.searchedResults);
+  const isLoadingMore = usePokemonStore((state)=> state.isLoadingMore);
+  const setIsLoadingMore = usePokemonStore((state)=> state.setIsLoadingMore);
+  const isInSearchingState = usePokemonStore((state)=> state.inSearchingState);
+  const setDisplayedPokemons = usePokemonStore((state)=> state.setDisplayedPokemons);
 
-export default function SettingsIsland({onSortChange, onLoadMorecards, isSearching, limit, offset}: SettingsIslandProps) {
-  const { status, data, loading, executeGetRequest} = useFetchPokemons(limit, offset, false);
-  const searchResults = usePokemonStore((state)=> state.searchResults);
-  const [localLoading, setLocalLoading] = useState<boolean>(false); // loading for viewing searched cards
+  const handleLoadMore = async () => {
+    setIsLoadingMore(true);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    setIsLoadingMore(false);
 
-
-  const handleLoadMore = () => {
-    if(isSearching){ //if on searching state, return from the filtered global pokemon store.   
-      setLocalLoading(true);
-
-      setTimeout(()=>{
-        onLoadMorecards(searchResults.slice(offset, offset+limit))
-        setLocalLoading(false);
-      }, 100)
-
+    if(isInSearchingState){ //if on searching state, loading more means loading from the searched results 
+      setDisplayedPokemons(searchResults.slice(0, offset + limit));
+      setOffset(offset + limit);
     }else{
-      executeGetRequest!();
+      setDisplayedPokemons(pokemons.slice(0, offset + limit));
+      setOffset(offset + limit);
     }
   };
-
-  useEffect(() => {
-    if (status === 200 && data) {
-      onLoadMorecards(data as Pokemon[]); // Append new cards
-    }
-  }, [status, data]); // Runs when the data or status changes
 
   return (
     <div className="fixed bottom-0 left-0 right-0 w-full p-4 z-10 flex justify-center w-full">
@@ -54,7 +42,7 @@ export default function SettingsIsland({onSortChange, onLoadMorecards, isSearchi
         <Card className="w-full max-w-4xl shadow-lg hover:shadow-xl transition-all duration-300 p-2 rounded-full bg-muted">
           <div className="flex flex-wrap items-center justify-between gap-3 md:flex-nowrap">
 
-            <SortDropDownMenu onSortChange={onSortChange}></SortDropDownMenu>
+            {/* <SortDropDownMenu onSortChange={onSortChange}></SortDropDownMenu> */}
 
             <Separator orientation="vertical" className="h-6 hidden md:block" />
 
@@ -65,10 +53,10 @@ export default function SettingsIsland({onSortChange, onLoadMorecards, isSearchi
             <Button
               size="sm"
               onClick={handleLoadMore}
-              disabled={loading}
+              disabled={isLoadingMore}
               className="ml-auto rounded-full text-xs bg-red-500 hover:bg-red-100 text-white hover:text-red-600 hover:border-red-500 hover:border"
             >
-              {(loading || localLoading) ? (
+              {(isLoadingMore) ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-1" />
               ) : null}
               See More

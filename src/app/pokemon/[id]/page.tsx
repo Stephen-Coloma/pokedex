@@ -2,9 +2,10 @@ import { Header } from "@/components/header";
 import { Separator } from "@/components/ui/separator";
 import { getPokemonProfile } from "@/actions/getPokemonProfile";
 import { PokemonProfileComponent } from "@/components/pokemon-profile-component";
+import { MAX_POKEMON_ID } from "@/lib/constants";
 
 export async function generateStaticParams() {
-  const pokemonIds = Array.from({length: 1009}, (_, index) => index + 1)
+  const pokemonIds = Array.from({length: MAX_POKEMON_ID}, (_, index) => index + 1)
  
   return pokemonIds.map((id) => ({
     id: id.toString(),

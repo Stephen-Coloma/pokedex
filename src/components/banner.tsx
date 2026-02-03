@@ -10,7 +10,7 @@ export function Banner() {
         <img
           src={"/pokedex.svg"}
           alt="pokedex"
-          className="h-30 sm:h-40 md:h-48 lg:h-60 relative z-10"
+          className="h-30 sm:h-40 2xl:h-48 relative z-10"
         />
       </div>
     </div>

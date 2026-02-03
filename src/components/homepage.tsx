@@ -5,7 +5,7 @@ import { PokemonCard } from "@/components/pokemon-card";
 import SettingsIsland from "@/components/settings-island";
 import { Separator } from "@/components/ui/separator";
 import { Pokemon } from "@/types/Pokemon";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Banner } from "@/components/banner";
 import { useRouter } from "next/navigation";
 import { SearchPokemon } from "@/components/search-pokemon";
@@ -18,13 +18,14 @@ type HomePageProps = {
 };
 
 export default function HomePage({ initialPokemons }: HomePageProps) {
-  const setPokemons = usePokemonStore((state) => state.setPokemons);
-  const setDisplayedPokemons = usePokemonStore((state) => state.setDisplayedPokemons);
-  const isLoadingMore = usePokemonStore((state) => state.isLoadingMore);
-  const isSearching = usePokemonStore((state) => state.isSearching);
   const setOffset = usePokemonStore((state) => state.setOffset);
-
+  const isSearching = usePokemonStore((state) => state.isSearching);
+  const setPokemons = usePokemonStore((state) => state.setPokemons);
+  const isLoadingMore = usePokemonStore((state) => state.isLoadingMore);
   const displayedPokemons = usePokemonStore((state) => state.displayedPokemons);
+  const setDisplayedPokemons = usePokemonStore((state) => state.setDisplayedPokemons);
+
+  const loaderRef = useRef<HTMLDivElement>(null);
 
   // hydrate the global store
   useEffect(() => {
@@ -33,6 +34,16 @@ export default function HomePage({ initialPokemons }: HomePageProps) {
     setDisplayedPokemons(initialPokemons.slice(0, 10));
     setOffset(10);
   }, [initialPokemons]);
+
+  // Auto-scroll to loader when it appears
+  useEffect(() => {
+    if ((isLoadingMore || isSearching) && loaderRef.current) {
+      loaderRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [isLoadingMore, isSearching]);
 
   const router = useRouter();
 
@@ -52,7 +63,7 @@ export default function HomePage({ initialPokemons }: HomePageProps) {
 
       {/* Main Container */}
       <div className="flex-1 justify-center items-center">
-        {displayedPokemons.length > 0 && !isSearching&& (
+        {displayedPokemons.length > 0 && !isSearching && (
           <div className="w-full h-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
             {displayedPokemons.map((pokemon) => (
               <PokemonCard
@@ -63,9 +74,9 @@ export default function HomePage({ initialPokemons }: HomePageProps) {
             ))}
           </div>
         )}
-        
+
         {displayedPokemons.length === 0 && !isSearching && !isLoadingMore && (
-          <div className="animate-in fade-in duration-300 flex flex-col items-center justify-center py-20 gap-4">
+          <div className="animate-in fade-in duration-300 flex flex-col items-center justify-center py-10 md:py-20 gap-4">
             <Image
               src="/icons/snorlax.png"
               alt="Loading"
@@ -82,7 +93,11 @@ export default function HomePage({ initialPokemons }: HomePageProps) {
           </div>
         )}
 
-        {(isLoadingMore || isSearching) && <PokemonWaveLoader />}
+        {(isLoadingMore || isSearching) && (
+          <div ref={loaderRef}>
+            <PokemonWaveLoader />
+          </div>
+        )}
       </div>
 
       <div className="py-10">

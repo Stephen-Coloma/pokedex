@@ -50,42 +50,42 @@ export default function HomePage({ initialPokemons }: HomePageProps) {
 
       <Separator className="mt-10"></Separator>
 
-      {displayedPokemons && displayedPokemons.length > 0 ? (
-        <div className="w-full h-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
-          {displayedPokemons.map((pokemon) => (
-            <PokemonCard
-              key={pokemon.id}
-              {...pokemon}
-              onViewProfile={handleViewProfile}
+      {/* Main Container */}
+      <div className="flex-1 justify-center items-center">
+        {displayedPokemons.length > 0 && !isSearching&& (
+          <div className="w-full h-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-5 py-5 lg:gap-8 lg:py-12">
+            {displayedPokemons.map((pokemon) => (
+              <PokemonCard
+                key={pokemon.id}
+                {...pokemon}
+                onViewProfile={handleViewProfile}
+              />
+            ))}
+          </div>
+        )}
+        
+        {displayedPokemons.length === 0 && !isSearching && !isLoadingMore && (
+          <div className="animate-in fade-in duration-300 flex flex-col items-center justify-center py-20 gap-4">
+            <Image
+              src="/icons/snorlax.png"
+              alt="Loading"
+              width={128}
+              height={128}
+              className="w-24 h-24 sm:w-32 sm:h-32"
             />
-          ))}
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <Image
-            src="/icons/snorlax.png"
-            alt="Loading"
-            width={128}
-            height={128}
-            className="w-24 h-24 sm:w-32 sm:h-32"
-          />
-          <h3 className="text-xl font-semibold text-muted-foreground text-center">
-            No Pokémon Found
-          </h3>
-          <p className="text-sm text-muted-foreground text-center">
-            Try searching for a different Pokémon name or ID
-          </p>
-        </div>
-      )}
+            <h3 className="text-xl font-semibold text-muted-foreground text-center">
+              No Pokémon Found
+            </h3>
+            <p className="text-sm text-muted-foreground text-center">
+              Try searching for a different Pokémon name or ID
+            </p>
+          </div>
+        )}
 
-      {/* Fixed loader overlay - always visible when loading */}
-      {(isLoadingMore || isSearching) && (
-        <div className="fixed bottom-16 md:bottom-20 lg:bottom-24 left-0 right-0 flex justify-center z-20 pointer-events-none">
-          <PokemonWaveLoader />
-        </div>
-      )}
+        {(isLoadingMore || isSearching) && <PokemonWaveLoader />}
+      </div>
 
-      <div className="py-10 border-t-2">
+      <div className="py-10">
         <SettingsIsland />
       </div>
     </div>

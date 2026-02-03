@@ -69,7 +69,7 @@ export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCa
     >
       {/* Outer golden border - like real Pokemon cards */}
       <div
-        className="p-[6px] rounded-2xl"
+        className="p-0.5 md:p-1.5 rounded-2xl"
         style={{
           background:
             "linear-gradient(135deg, #f4c430 0%, #d4af37 50%, #f4c430 100%)",
@@ -87,12 +87,12 @@ export function PokemonCard({ id, name, photo, types, onViewProfile }: PokemonCa
             }}
           >
             <div className="flex justify-between items-center mb-1">
-              <h3 className="text-lg font-bold text-foreground capitalize tracking-wide">
+              <h3 className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-foreground capitalize tracking-wide">
                 {name}
               </h3>
               <Badge
                 variant="secondary"
-                className="font-mono text-xs px-2 py-0.5"
+                className="font-mono text-xs py-0.5"
                 style={{
                   backgroundColor: hexToRgba(typeColor, 0.2),
                   borderColor: typeColor,

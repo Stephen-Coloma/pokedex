@@ -20,13 +20,6 @@ export function SearchPokemon() {
         async (e: React.ChangeEvent<HTMLInputElement>) => {
           const term = e.target.value.toLowerCase();
 
-          if(term.length > 1) {
-            setInSearchingState(true);
-            setIsSearching(true);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            setIsSearching(false);
-          }
-
           if (!term && pokemon) {
             const resetData = pokemon.slice(0, 10);
             setDisplayedPokemons(resetData);
@@ -34,6 +27,14 @@ export function SearchPokemon() {
             setOffset(10);
             return;
           }
+          
+          if(term.length > 1) {
+            setInSearchingState(true);
+            setIsSearching(true);
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            setIsSearching(false);
+          }
+
 
           //store the search results on the global store so that island settings will have access to it.
           let tempSearchResults: Pokemon[] = [];

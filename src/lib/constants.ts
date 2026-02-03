@@ -1,6 +1,6 @@
 export const POKEMON_BASE_URL = `https://pokeapi.co/api/v2/pokemon`;
 export const POKEMON_SPECIES_URL = `https://pokeapi.co/api/v2/pokemon-species`;
-export const MAX_POKEMON_ID = 1025;
+export const MAX_POKEMON_ID = 100;
 
 import { PokemonType } from "@/types/PokemonType";
 

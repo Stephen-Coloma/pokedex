@@ -5,7 +5,7 @@ This project is a **Pokedex web application** built as part of the technical ass
 ---
 
 ## 🚀 Deployed on Vercel
-### Check out this link: [Pokedex Webapp](https://pokedex-theta-nine-27.vercel.app/) <br>
+### Check out this link: [Pokedex Webapp](https://pokedex.stephencoloma.com) <br>
 - Note! Make sure you update your browser for better experience.
 
 ## 📌 Features
